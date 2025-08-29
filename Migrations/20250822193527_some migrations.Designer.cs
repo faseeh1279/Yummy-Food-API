@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yummy_Food_API;
 
@@ -11,9 +12,11 @@ using Yummy_Food_API;
 namespace Yummy_Food_API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250822193527_some migrations")]
+    partial class somemigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,11 +31,16 @@ namespace Yummy_Food_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AdminProfileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("AdminProfileId");
 
                     b.ToTable("ItemCategories");
                 });
@@ -48,7 +56,8 @@ namespace Yummy_Food_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("AdminProfiles");
                 });
@@ -57,6 +66,9 @@ namespace Yummy_Food_API.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AdminProfileId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ComplaintDescription")
@@ -78,6 +90,8 @@ namespace Yummy_Food_API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdminProfileId");
+
                     b.HasIndex("CustomerProfileId");
 
                     b.HasIndex("RiderProfileId");
@@ -91,6 +105,9 @@ namespace Yummy_Food_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AdminProfileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("ComplaintStatus")
                         .HasColumnType("int");
 
@@ -99,7 +116,10 @@ namespace Yummy_Food_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AdminProfileId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("CustomerProfiles");
                 });
@@ -108,6 +128,9 @@ namespace Yummy_Food_API.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AdminProfileId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -132,6 +155,8 @@ namespace Yummy_Food_API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdminProfileId");
+
                     b.HasIndex("ItemCategoryId");
 
                     b.HasIndex("OrderId");
@@ -145,11 +170,7 @@ namespace Yummy_Food_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("FileDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileExtension")
+                    b.Property<string>("ContentType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -157,15 +178,12 @@ namespace Yummy_Food_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("FileSizeInBytes")
-                        .HasColumnType("bigint");
-
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -178,6 +196,9 @@ namespace Yummy_Food_API.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AdminProfileId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CompletedAt")
@@ -208,6 +229,8 @@ namespace Yummy_Food_API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdminProfileId");
+
                     b.HasIndex("CustomerProfileId");
 
                     b.HasIndex("RiderProfileId");
@@ -221,6 +244,9 @@ namespace Yummy_Food_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AdminProfileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -230,7 +256,10 @@ namespace Yummy_Food_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AdminProfileId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("RefreshTokens");
                 });
@@ -238,19 +267,18 @@ namespace Yummy_Food_API.Migrations
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.RiderProfile", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AdminProfileId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Cnic")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("AdminProfileId");
 
                     b.ToTable("RiderProfiles");
                 });
@@ -285,11 +313,18 @@ namespace Yummy_Food_API.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Yummy_Food_API.ItemCategory", b =>
+                {
+                    b.HasOne("Yummy_Food_API.Models.Domain.AdminProfile", null)
+                        .WithMany("ItemCategories")
+                        .HasForeignKey("AdminProfileId");
+                });
+
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.AdminProfile", b =>
                 {
                     b.HasOne("Yummy_Food_API.Models.Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("AdminProfile")
+                        .HasForeignKey("Yummy_Food_API.Models.Domain.AdminProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -298,6 +333,10 @@ namespace Yummy_Food_API.Migrations
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.Complaint", b =>
                 {
+                    b.HasOne("Yummy_Food_API.Models.Domain.AdminProfile", null)
+                        .WithMany("Complaints")
+                        .HasForeignKey("AdminProfileId");
+
                     b.HasOne("Yummy_Food_API.Models.Domain.CustomerProfile", "CustomerProfile")
                         .WithMany("Complaints")
                         .HasForeignKey("CustomerProfileId");
@@ -313,9 +352,13 @@ namespace Yummy_Food_API.Migrations
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.CustomerProfile", b =>
                 {
+                    b.HasOne("Yummy_Food_API.Models.Domain.AdminProfile", null)
+                        .WithMany("CustomerProfiles")
+                        .HasForeignKey("AdminProfileId");
+
                     b.HasOne("Yummy_Food_API.Models.Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("CustomerProfile")
+                        .HasForeignKey("Yummy_Food_API.Models.Domain.CustomerProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -324,6 +367,10 @@ namespace Yummy_Food_API.Migrations
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.Item", b =>
                 {
+                    b.HasOne("Yummy_Food_API.Models.Domain.AdminProfile", null)
+                        .WithMany("Items")
+                        .HasForeignKey("AdminProfileId");
+
                     b.HasOne("Yummy_Food_API.ItemCategory", "ItemCategory")
                         .WithMany("Items")
                         .HasForeignKey("ItemCategoryId")
@@ -348,6 +395,10 @@ namespace Yummy_Food_API.Migrations
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.Order", b =>
                 {
+                    b.HasOne("Yummy_Food_API.Models.Domain.AdminProfile", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("AdminProfileId");
+
                     b.HasOne("Yummy_Food_API.Models.Domain.CustomerProfile", "CustomerProfile")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerProfileId")
@@ -365,9 +416,13 @@ namespace Yummy_Food_API.Migrations
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.RefreshToken", b =>
                 {
+                    b.HasOne("Yummy_Food_API.Models.Domain.AdminProfile", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("AdminProfileId");
+
                     b.HasOne("Yummy_Food_API.Models.Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("RefreshToken")
+                        .HasForeignKey("Yummy_Food_API.Models.Domain.RefreshToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -376,9 +431,13 @@ namespace Yummy_Food_API.Migrations
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.RiderProfile", b =>
                 {
+                    b.HasOne("Yummy_Food_API.Models.Domain.AdminProfile", null)
+                        .WithMany("Riders")
+                        .HasForeignKey("AdminProfileId");
+
                     b.HasOne("Yummy_Food_API.Models.Domain.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
+                        .WithOne("RiderProfile")
+                        .HasForeignKey("Yummy_Food_API.Models.Domain.RiderProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -388,6 +447,23 @@ namespace Yummy_Food_API.Migrations
             modelBuilder.Entity("Yummy_Food_API.ItemCategory", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Yummy_Food_API.Models.Domain.AdminProfile", b =>
+                {
+                    b.Navigation("Complaints");
+
+                    b.Navigation("CustomerProfiles");
+
+                    b.Navigation("ItemCategories");
+
+                    b.Navigation("Items");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("RefreshTokens");
+
+                    b.Navigation("Riders");
                 });
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.CustomerProfile", b =>
@@ -412,6 +488,17 @@ namespace Yummy_Food_API.Migrations
                     b.Navigation("Complaints");
 
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Yummy_Food_API.Models.Domain.User", b =>
+                {
+                    b.Navigation("AdminProfile");
+
+                    b.Navigation("CustomerProfile");
+
+                    b.Navigation("RefreshToken");
+
+                    b.Navigation("RiderProfile");
                 });
 #pragma warning restore 612, 618
         }

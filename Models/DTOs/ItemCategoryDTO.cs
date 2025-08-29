@@ -1,9 +1,11 @@
+﻿using System.ComponentModel.DataAnnotations;
+using Yummy_Food_API.Models.Domain;
+
 namespace Yummy_Food_API.Models.DTOs
 {
     public class ItemCategoryDTO
     {
-        public Guid ID { get; set; }
         public string Category { get; set; } = string.Empty;
-        public required List<MenuItem> Items { get; set; }
+        public ICollection<Item> Items { get; set; }
     }
 }
