@@ -6,8 +6,10 @@ namespace Yummy_Food_API.Repositories.Interfaces
     public interface IAuthRepository
     {
         Task<User> SignUp(User user);
-        Task<(bool, string)> Login(User user);
-        Task<string> GetUserAsync(User user);
-        //Task SaveRefreshToken();
+        Task<(bool, string, Guid)> Login(User user);
+        Task<User> GetUserAsync(User user);
+        Task<RefreshToken?> GetRefreshToken(string Token); 
+        Task AddRefreshToken(RefreshToken refreshToken);
+        Task<User?> GetUserDataByRefreshToken(string refreshToken);
     }
 }

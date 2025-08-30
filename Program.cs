@@ -62,15 +62,15 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-// Configure CORS policy
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowSpecificOrigin",
-//        builder => builder
-//            .WithOrigins("http://localhost:4200") // frontend URL
-//            .AllowAnyHeader()
-//            .AllowAnyMethod());
-//});
+//Configure CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+       builder => builder
+            .WithOrigins("http://localhost:4200") // frontend URL
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 // Jwt Authentication 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {

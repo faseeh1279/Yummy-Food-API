@@ -1,0 +1,30 @@
+# Build
+bin/
+obj/
+out/
+
+# VS / Rider
+.vs/
+.idea/
+*.user
+*.suo
+
+# Logs
+*.log
+logs/
+
+# Database
+*.mdf
+*.ldf
+*.db
+
+# Secrets
+appsettings.Development.json
+secrets.json
+.env
+
+# OS junk
+*.DS_Store
+Thumbs.db
+# Images 
+Images

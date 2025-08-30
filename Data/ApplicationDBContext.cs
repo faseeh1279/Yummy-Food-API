@@ -5,37 +5,20 @@ namespace Yummy_Food_API
 {
     public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : DbContext(options)
     {
-        public DbSet<User> Users { get; set; } 
-        public DbSet<CustomerProfile> CustomerProfiles { get; set; } 
-        public DbSet<AdminProfile> AdminProfiles { get; set; } 
-        public DbSet<RiderProfile> RiderProfiles { get; set; } 
+        public DbSet<User> Users { get; set; }
+        public DbSet<CustomerProfile> CustomerProfiles { get; set; }
+        public DbSet<AdminProfile> AdminProfiles { get; set; }
+        public DbSet<RiderProfile> RiderProfiles { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemCategory> ItemCategories { get; set; }
-        public DbSet<Order> Orders { get; set; } 
-        public DbSet<Complaint> Complaints { get; set; } 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Complaint> Complaints { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ItemImage> ItemImages { get; set; }
 
         // Relationships 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //// One-to-one User <-> AdminProfile
-            //modelBuilder.Entity<AdminProfile>()
-            //    .HasOne(a => a.User)
-            //    .WithOne(u => u.AdminProfile)
-            //    .HasForeignKey<AdminProfile>(a => a.UserId);
-
-            //// One-to-one User <-> CustomerProfile
-            //modelBuilder.Entity<CustomerProfile>()
-            //    .HasOne(c => c.User)
-            //    .WithOne(u => u.CustomerProfile)
-            //    .HasForeignKey<CustomerProfile>(c => c.UserId);
-
-            //// One-to-one User <-> RiderProfile
-            //modelBuilder.Entity<RiderProfile>()
-            //    .HasOne(r => r.User)
-            //    .WithOne(u => u.RiderProfile)
-            //    .HasForeignKey<RiderProfile>(r => r.UserId);
 
             // One-to-many CustomerProfile -> Complaints
             modelBuilder.Entity<Complaint>()
@@ -67,12 +50,15 @@ namespace Yummy_Food_API
                 .WithMany(rp => rp.Orders)
                 .HasForeignKey(o => o.RiderProfileId);
 
-            //// One-to-one User -> RefreshToken
-            //modelBuilder.Entity<RefreshToken>()
-            //    .HasOne(rt => rt.User)
-            //    .WithOne(u => u.RefreshToken)
-            //    .HasForeignKey<RefreshToken>(rt => rt.UserId);
+            modelBuilder.Entity<RefreshToken>()
+                .HasOne(rt => rt.User)
+                .WithOne(u => u.RefreshToken)
+                .HasForeignKey<RefreshToken>(rt => rt.UserId);
 
+            modelBuilder
+                .Entity<User>()
+                .Property(u => u.Role)
+                .HasConversion<string>();
         }
     }
 }

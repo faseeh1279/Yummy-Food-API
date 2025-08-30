@@ -11,7 +11,8 @@ namespace Yummy_Food_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    //[Authorize(Roles = "Admin")]
+    [Authorize]
     public class AdminController : ControllerBase
     {
         private readonly IAdminRepository _adminRepository;

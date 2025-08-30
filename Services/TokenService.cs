@@ -45,6 +45,7 @@ namespace Yummy_Food_API.Services
             var hasher = new PasswordHasher<object>();
             return hasher.HashPassword(null, password);
         }
+      
         public bool VerifyPassword(string hashedPassword, string enteredPassword)
         {
             var hasher = new PasswordHasher<object>();

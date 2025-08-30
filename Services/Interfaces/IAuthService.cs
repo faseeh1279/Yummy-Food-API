@@ -7,5 +7,6 @@ namespace Yummy_Food_API.Services.Interfaces
     {
         Task<LoginResultDTO> Login(LoginDTO loginDTO);
         Task<User> SignUp(SignUpDTO signUpDTO);
+        Task<string> GenerateNewAccessToken(string refreshToken); 
     }
 }

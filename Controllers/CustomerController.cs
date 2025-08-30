@@ -8,6 +8,7 @@ namespace Yummy_Food_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerRepository _customerRepository;

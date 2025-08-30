@@ -17,6 +17,14 @@ namespace Yummy_Food_API.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost("signup")]
+        public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
+        {
+            var result = await _authService.SignUp(signUpDTO);
+            return Ok(result);
+        }
+
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
@@ -25,19 +33,11 @@ namespace Yummy_Food_API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("signup")]
-        public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
+        [HttpPost("Generate-Access-Token")]
+        public async Task<IActionResult> GenerateAccessToken([FromBody] string refreshToken)
         {
-            var result = await _authService.SignUp(signUpDTO);
+            var result = await _authService.GenerateNewAccessToken(refreshToken);
             return Ok(result);
         }
-
-        [HttpPost("refresh-token")]
-        public async Task<IActionResult> GenerateRefreshToken(string refreshToken)
-        {
-            return Ok("Refresh token logic not implemented yet.");
-        }
-
-
     }
 }

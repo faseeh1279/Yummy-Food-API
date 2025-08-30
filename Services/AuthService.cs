@@ -28,22 +28,35 @@ namespace Yummy_Food_API.Services
         {
             var user = new User
             {
-                Name = loginDTO.Name,
+                Username = loginDTO.Name,
                 Email = loginDTO.Email
             };
-            var hashedPassword = await _authRepository.GetUserAsync(user); // returns a string or null
-            if (hashedPassword != null)
+            var userResult = await _authRepository.GetUserAsync(user); // returns a string or null
+
+            
+
+            if (userResult.HashedPassword != null)
             {
-                var result = _tokenService.VerifyPassword(hashedPassword, loginDTO.Password);
+                var result = _tokenService.VerifyPassword(userResult.HashedPassword, loginDTO.Password);
                 if (result)
                 {
                     var accessToken = _tokenService.GenerateJSONWebToken(loginDTO);
-                    //var refreshToken = _tokenService.GenerateRefreshToken(); 
+                    var refreshToken = _tokenService.GenerateRefreshToken();
+
+                    var token = new RefreshToken
+                    {
+                        UserId = userResult.Id,
+                        Token = refreshToken,
+                        Expires = DateTime.UtcNow.AddDays(7),  // <-- Expires after 7 days
+                    };
+
+                    await _authRepository.AddRefreshToken(token);
+
                     return new LoginResultDTO
                     {
                         Message = "Login Successful",
                         AccessToken = accessToken,
-                        RefreshToken = ""
+                        RefreshToken = refreshToken
                     };
                 }
                 else
@@ -62,8 +75,8 @@ namespace Yummy_Food_API.Services
                 return new LoginResultDTO
                 {
                     Message = "Login Failed",
-                    AccessToken = "AccessToken",
-                    RefreshToken = "RefreshToken"
+                    AccessToken = "null",
+                    RefreshToken = "null"
                 };
             }
 
@@ -76,7 +89,7 @@ namespace Yummy_Food_API.Services
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Name = signUpDTO.Name,
+                Username = signUpDTO.Name,
                 Email = signUpDTO.Email,
                 PhoneNumber = signUpDTO.PhoneNumber,
                 HashedPassword = hashedPassword, // Store the hashed password
@@ -86,5 +99,36 @@ namespace Yummy_Food_API.Services
             return result;
         }
 
+        public async Task<string> GenerateNewAccessToken(string refreshToken)
+        {
+            var result = await _authRepository.GetRefreshToken(refreshToken);
+            if(result == null)
+            {
+                return "Invalid Refresh Token"; 
+            }
+
+            if(result.Expires < DateTime.UtcNow)
+            {
+                return "Refresh Token Expired, Login Again to Continue"; 
+            }
+            else
+            {
+                var userData = await _authRepository.GetUserDataByRefreshToken(result.Token);
+                if(userData != null)
+                {
+                    var loginDTO = new LoginDTO
+                    {
+                        Name = userData.Username,
+                        Email = userData.Email
+                    }; 
+                    var response = _tokenService.GenerateJSONWebToken(loginDTO);
+                    return response; 
+                }
+                else
+                {
+                    return "Something went wrong! Try Again"; 
+                }
+            } 
+        }
     }
 }

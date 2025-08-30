@@ -8,7 +8,7 @@ namespace Yummy_Food_API.Models.Domain
         [Key]
         public Guid Id { get; set; }
         [Required]
-        public string Name { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
         [Required]
         public string PhoneNumber { get; set; }
         [Required]
@@ -16,6 +16,9 @@ namespace Yummy_Food_API.Models.Domain
         [Required]
         public string HashedPassword { get; set; } = string.Empty;
         public UserRole Role { get; set; } = UserRole.Customer;
+
+        // Navigation Property 
+        public RefreshToken RefreshToken { get; set; } 
 
     }
 }
