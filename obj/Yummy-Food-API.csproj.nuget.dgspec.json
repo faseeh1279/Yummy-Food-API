@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Programming\\ASP.NET Core Projects\\Yummy-Food-API\\Yummy-Food-API.csproj": {}
+    "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\Yummy-Food-API.csproj": {}
   },
   "projects": {
-    "D:\\Programming\\ASP.NET Core Projects\\Yummy-Food-API\\Yummy-Food-API.csproj": {
+    "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\Yummy-Food-API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programming\\ASP.NET Core Projects\\Yummy-Food-API\\Yummy-Food-API.csproj",
+        "projectUniqueName": "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\Yummy-Food-API.csproj",
         "projectName": "Yummy-Food-API",
-        "projectPath": "D:\\Programming\\ASP.NET Core Projects\\Yummy-Food-API\\Yummy-Food-API.csproj",
-        "packagesPath": "C:\\Users\\Mr. K\\.nuget\\packages\\",
-        "outputPath": "D:\\Programming\\ASP.NET Core Projects\\Yummy-Food-API\\obj\\",
+        "projectPath": "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\Yummy-Food-API.csproj",
+        "packagesPath": "C:\\Users\\MK Laptop\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Mr. K\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\MK Laptop\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,12 +44,24 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNet.WebApi.Core": {
+              "target": "Package",
+              "version": "[5.3.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.18, )"
+            },
+            "Microsoft.AspNetCore.SignalR.Client": {
+              "target": "Package",
+              "version": "[9.0.8, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -66,9 +78,17 @@
               "target": "Package",
               "version": "[9.0.6, )"
             },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.12.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.12.1, )"
             }
           },
           "imports": [
@@ -90,7 +110,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

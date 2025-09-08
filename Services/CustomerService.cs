@@ -13,11 +13,15 @@ namespace Yummy_Food_API.Services
         {
             _customerRepository = customerRepository;
         }
-        public async Task<List<Item>> GetAllItemAsync()
+
+        public async Task GetAllItemsListAsync()
         {
-            return await _customerRepository.GetAllItemsAsync(); 
+            var items = await _customerRepository.GetAllItemsAsync();
+            var itemCategories = await _customerRepository.GetAllItemCategoriesAsync();
+            var itemImages = await _customerRepository.GetAllItemsAsync();
         }
 
-        
+
     }
+
 }

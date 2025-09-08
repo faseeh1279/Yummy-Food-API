@@ -6,6 +6,5 @@ namespace Yummy_Food_API.Models.DTOs
     public class ItemCategoryDTO
     {
         public string Category { get; set; } = string.Empty;
-        public ICollection<Item> Items { get; set; }
     }
 }

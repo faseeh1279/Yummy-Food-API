@@ -24,46 +24,51 @@ namespace Yummy_Food_API.Services
         
         public async Task<string> AddItemAsync(ItemDTO itemDTO)
         {
-            // Check if item category exists 
-            var userItemCategory = await _adminRepository.GetItemCategoryAsync(itemDTO.Category);  
-            if (userItemCategory == null)
-            {
-                var itemCategory = new ItemCategory
-                {
-                    ID = Guid.NewGuid(),
-                    Category = itemDTO.Category, 
-                };
-                await _adminRepository.AddItemCategoryAsync(itemCategory);
-                var item = new Item
-                {
-                    Id = Guid.NewGuid(),
-                    Name = itemDTO.Name,
-                    Description = itemDTO.Description,
-                    Price = itemDTO.Price,
-                    Discount = itemDTO.Discount,
-                    ItemCategoryId = itemCategory.ID
-                };
-                await _adminRepository.AddItemAsync(item);
-                return "Item Added Successfully"; 
-            }
-            else
-            {
-                Item item = new Item
-                {
-                    Id = Guid.NewGuid(),
-                    Name = itemDTO.Name,
-                    Description = itemDTO.Description,
-                    Price = itemDTO.Price,
-                    Discount = itemDTO.Discount,
-                    ItemCategoryId = userItemCategory.ID
-                };
-                await _adminRepository.AddItemAsync(item); 
-                return "Category already exists, item added without category";
-            }
-             
+            var result = await _adminRepository.AddItemAsync(itemDTO);
+            return result; 
         }
 
-        
+        public async Task<string> AddCategoryAsync(ItemCategoryDTO itemCategoryDTO)
+        {
+            var data = new ItemCategory
+            {
+                ID = Guid.NewGuid(),
+                Category = itemCategoryDTO.Category
+            };
+            var result = await _adminRepository.AddItemCategoryAsync(data);
+            return result; 
+        }
+
+        public async Task<string> DeleteCategoryAsync(Guid CategoryId)
+        {
+            var result = await _adminRepository.DeleteCategoryAsync(CategoryId);
+            return result; 
+        }
+
+        public async Task<string> UpdateCategoryAsync(Guid CategoryId, ItemCategoryDTO itemCategoryDTO)
+        {
+            
+            var result = await _adminRepository.UpdateCategoryAsync(CategoryId, itemCategoryDTO.Category);
+            return result; 
+        }
+
+        public async Task<List<object>> GetAllCategoriesAsync()
+        {
+            //return await _adminRepository.GetAllCategoriesAsync();
+            var data = await _adminRepository.GetAllCategoriesAsync();
+            var result = new List<object>(); 
+            foreach(var item in data)
+            {
+                result.Add(new
+                {
+                    ID = item.ID,
+                    Category = item.Category
+                });  
+            }
+            return result; 
+        }
+
+
         public async Task<List<Order>> GetAllOrdersAsync()
         {
             return await _adminRepository.GetAllOrdersAsync();
@@ -72,6 +77,89 @@ namespace Yummy_Food_API.Services
         public async Task<List<Complaint>> GetAllComplaintsAsync()
         {
             return await _adminRepository.GetAllComplaintsAsync();
+        }
+
+        public async Task<IEnumerable<ItemResponseDTO>> GetAllItemsAsync()
+        {
+            var items = await _adminRepository.GetAllItemsAsync();
+            var itemImages = await _adminRepository.GetAllItemImagesAsync();
+             var itemCategories = await _adminRepository.GetAllItemCategoriesAsync();
+
+            var result = ConvertItemAndImagesToResponse(items, itemImages, itemCategories);
+            return result;
+        }
+
+        public async Task<string> DeleteItemAsync(Guid id)
+        {
+            var result = await _adminRepository.DeleteItemAsync(id);
+            return result; 
+        }
+
+
+
+        public async Task<string> UpdateItemAsync(Guid id, ItemDTO itemDTO)
+        {
+            var result = await _adminRepository.UpdateItemAsync(id, itemDTO);
+            return result;
+        }
+
+
+
+        private ItemResponseDTO BindItemWithReleventImages(Item item, List<ItemImage> itemImages)
+        {
+            var images = new List<ItemImageResponseDTO>(); 
+            foreach(var image in itemImages)
+            {
+                if (image != null && image.Id == item.Id)
+                {
+                    images.Add(new ItemImageResponseDTO
+                    {
+                        FileName = image.FileName, 
+                        FilePath = image.FilePath,
+                    });
+                }
+            }
+
+           
+                var result = new ItemResponseDTO
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Description = item.Description,
+                    Price = item.Price,
+                    Discount = item.Discount,
+                    Images = images
+                };
+                return result;
+               
+        }
+        private IEnumerable<ItemResponseDTO> ConvertItemAndImagesToResponse(List<Item> items, List<ItemImage> itemImages, List<ItemCategory> itemCategories)
+        {
+            var itemResponses = new List<ItemResponseDTO>();
+            
+            foreach (var item in items)
+            {
+                var imagesForItem = itemImages
+                    .Where(img => img.ItemId == item.Id)
+                    .Select(img => new ItemImageResponseDTO
+                    {
+                        FileName = img.FileName,
+                        FilePath = img.FilePath
+                    })
+                    .ToList();
+
+                itemResponses.Add(new ItemResponseDTO
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Price = item.Price,
+                    Description = item.Description,
+                    Category = item.ItemCategory.Category, // TODO: fetch from itemCategories
+                    Images = imagesForItem
+                });
+            }
+
+            return itemResponses;
         }
     }
 }

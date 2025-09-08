@@ -1,19 +1,31 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Yummy_Food_API;
+using Yummy_Food_API.Hubs;
 using Yummy_Food_API.Repositories;
 using Yummy_Food_API.Repositories.Interfaces;
 using Yummy_Food_API.Services;
 using Yummy_Food_API.Services.Interfaces;
-
+using Yummy_Food_API.Services.Realtime;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connection = new HubConnectionBuilder()
+    .WithUrl("https://localhost:7284/chatHub")
+    .Build();
+
+
+
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddHttpContextAccessor(); 
+builder.Services.AddHttpContextAccessor();
+
+// Add SignalR
+builder.Services.AddSignalR(); 
+
 // Add Repositories 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
@@ -24,6 +36,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddSingleton<OrderNotificationService>(); 
 // Add Mappings 
 
 // Database Injecting & Add Database context 
@@ -121,5 +134,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();
+
+// Mapping SignalR Classes
+app.MapHub<OrderHub>("/chatHub");
+
 
 app.Run();

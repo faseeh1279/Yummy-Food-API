@@ -344,11 +344,13 @@ namespace Yummy_Food_API.Migrations
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.ItemImage", b =>
                 {
-                    b.HasOne("Yummy_Food_API.Models.Domain.Item", null)
+                    b.HasOne("Yummy_Food_API.Models.Domain.Item", "Item")
                         .WithMany("Images")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Yummy_Food_API.Models.Domain.Order", b =>

@@ -8,39 +8,31 @@ namespace Yummy_Food_API.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        private readonly ApplicationDBContext _dbcontext; 
+        private readonly ApplicationDBContext _dbContext; 
         public CustomerRepository(ApplicationDBContext dbcontext)
         {
-            _dbcontext = dbcontext;
+            _dbContext = dbcontext;
         }
+
         public async Task<List<Item>> GetAllItemsAsync()
         {
-            return await _dbcontext.Items.ToListAsync(); 
+            return await _dbContext.Items.ToListAsync(); 
         }
-
-        public async Task<Item> GetItemAsync(Guid itemID)
+        public async Task<List<ItemCategory>> GetAllItemCategoriesAsync()
         {
-            var result = await _dbcontext.Items.FirstOrDefaultAsync(i => i.Id == itemID);
-            return result; 
+            return await _dbContext.ItemCategories.ToListAsync(); 
         }
-
-        public async Task<List<ItemCategory>> GetItemsCategoriesAsync()
+        public async Task<List<ItemImage>> GetAllItemImagesAsync()
         {
-            return await _dbcontext.ItemCategories.ToListAsync(); 
+            return await _dbContext.ItemImages.ToListAsync();
         }
-
-        public async Task<ItemCategory> GetItemCategoryAsync(Guid itemCategoryID)
+        public async Task<Order> PlaceOrderAsync(Order order)
         {
-            var result = await _dbcontext.ItemCategories.FirstOrDefaultAsync(i => i.ID == itemCategoryID);
-            return result; 
+            var result = await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
+            return result.Entity; 
         }
 
-        public async Task<string> PlaceOrderAsync(Order order)
-        {
-            await _dbcontext.Orders.AddAsync(order);
-            await _dbcontext.SaveChangesAsync();
-            return "Order placed successfully";
-        }
-
+        
     }
 }

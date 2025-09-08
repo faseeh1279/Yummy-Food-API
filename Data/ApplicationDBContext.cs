@@ -32,6 +32,13 @@ namespace Yummy_Food_API
                 .WithMany(rp => rp.Complaints)
                 .HasForeignKey(c => c.RiderProfileId);
 
+            // One-to-many Items -> ItemImages 
+            modelBuilder.Entity<Item>()
+                .HasMany(i => i.Images)          
+                .WithOne(it => it.Item)        
+                .HasForeignKey(it => it.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // One-to-many ItemCategory -> Items
             modelBuilder.Entity<Item>()
                 .HasOne(i => i.ItemCategory)

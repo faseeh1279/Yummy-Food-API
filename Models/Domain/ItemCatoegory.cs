@@ -7,8 +7,9 @@ namespace Yummy_Food_API
     {
         [Key]
         public Guid ID { get; set; }
+        [Required]
         public string Category { get; set; } = string.Empty;
-        public ICollection<Item> Items { get; set; }
-
+        // Navigation property
+        public ICollection<Item> Items { get; set; } = new List<Item>();
     }
 }

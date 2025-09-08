@@ -13,5 +13,6 @@ namespace Yummy_Food_API.Models.Domain
         public string FileExtension { get; set; } 
         public long FileSizeInBytes { get; set; } 
         public string FilePath { get; set; } 
+        public Item Item { get; set; }
     }
 }

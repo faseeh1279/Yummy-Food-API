@@ -12,34 +12,96 @@ namespace Yummy_Food_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize(Roles = "Admin")]
-    [Authorize]
     public class AdminController : ControllerBase
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IAdminService _adminService;
-        private readonly ApplicationDBContext _dbContext;
-        private readonly IWebHostEnvironment _webHostEnvironment; 
-        public AdminController(IAdminRepository adminRepository, 
-            IAdminService adminService, 
-            ApplicationDBContext dbContext, 
-            IWebHostEnvironment webHostEnvironment)
+        public AdminController(IAdminRepository adminRepository,
+            IAdminService adminService)
         {
             _adminRepository = adminRepository;
             _adminService = adminService;
-            _dbContext = dbContext;
-            _webHostEnvironment = webHostEnvironment;
         }
 
+        [HttpPost("AddCategory")]
+        public async Task<IActionResult> AddCategoryAsync([FromBody] ItemCategoryDTO itemCategoryDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _adminService.AddCategoryAsync(itemCategoryDTO);
+            return Ok(result);
+        }
+
+        [HttpPut("UpdateCategory")]
+        public async Task<IActionResult> UpdateCategoryAsync([FromQuery] Guid CategoryId, [FromBody] ItemCategoryDTO itemCategoryDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            else
+            {
+                var result = await _adminService.UpdateCategoryAsync(CategoryId, itemCategoryDTO);
+                return Ok(result);
+            }
+        }
+
+        [HttpDelete]
+        [Route("Delete-Category/{CategoryId}")]
+        public async Task<IActionResult> DeleteCategoryAsync(Guid CategoryId)
+        {
+            if (CategoryId != null)
+            {
+                var result = await _adminService.DeleteCategoryAsync(CategoryId);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("Category is Null");
+            }
+        }
+
+        [HttpGet("Get-All-Categories")]
+        public async Task<IActionResult> GetAllCategoriesAsync()
+        {
+            var result = await _adminService.GetAllCategoriesAsync();
+            return Ok(result);
+        }
 
         [HttpPost("AddItem")]
         public async Task<IActionResult> AddItemAsync([FromBody] ItemDTO itemDTO)
         {
-            if (itemDTO == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Item data is null");
+                return BadRequest(ModelState);
             }
             var result = await _adminService.AddItemAsync(itemDTO);
-            return Ok(result); 
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("Update-Item")]
+        public async Task<IActionResult> UpdateItemAsync([FromQuery] Guid itemID, [FromBody] ItemDTO itemDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            else
+            {
+                var result = await _adminService.UpdateItemAsync(itemID, itemDTO);
+                return Ok(result); 
+            }
+        }
+
+        [HttpDelete]
+        [Route("Delete-Item/{id}")]
+        public async Task<IActionResult> DeleteItemAsync([FromRoute] Guid Id)
+        {
+            var result = await _adminService.DeleteItemAsync(Id);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -60,44 +122,41 @@ namespace Yummy_Food_API.Controllers
                     FileSizeInBytes = request.File.Length,
                     FormFile = request.File   // <-- Important mapping
                 };
-                var result = await _adminRepository.Upload(itemImageModel); 
-                return Ok(result); 
+                var result = await _adminRepository.Upload(itemImageModel);
+                return Ok(result);
             }
-            return BadRequest(ModelState); 
+            return BadRequest(ModelState);
         }
 
         [HttpGet]
-        [Route("Orders")]
-        public async Task<IActionResult> GetOrders()
+        [Route("Get-Item-Image/{id}")]
+        public IActionResult GetImage([FromRoute] Guid id)
         {
-            var orders = await _adminService.GetAllOrdersAsync();
-            return Ok(); 
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", "Item-Images", id.ToString());
+
+            if (!System.IO.File.Exists(filePath))
+                return NotFound();
+
+            var imageBytes = System.IO.File.ReadAllBytes(filePath);
+            var contentType = "image/" + Path.GetExtension(filePath).Trim('.'); // jpg, png, etc.
+
+            return File(imageBytes, contentType);
         }
 
         [HttpGet]
-        [Route("Complaints")]
-        public async Task<IActionResult> GetComplaints()
+        [Route("Get-All-Items")]
+        public async Task<IActionResult> GetAllItemsAsync()
         {
-            var complaints = await _adminService.GetAllComplaintsAsync();
-            return Ok(complaints);
+            var result = await _adminService.GetAllItemsAsync();
+            return Ok(result);
         }
 
-        [HttpGet]
-        [Route("Riders")]
-        public async Task<IActionResult> GetRidersAsycn()
-        {
-            return Ok(""); 
-        }
-
-        [HttpPost]
-        [Route("ViewRiderProfile")]
-        public async Task<IActionResult> ViewRiderProfileAsync([FromBody] Guid riderId)
+        [HttpPut]
+        [Route("Update-Item-Image")]
+        public async Task<IActionResult> UpdateItemImage([FromQuery] Guid ImageId, [FromForm] ItemImageDTO request)
         {
             return Ok("");
         }
-
-
-        
 
         private void ValidateFileUpload(ItemImageDTO request)
         {
@@ -106,7 +165,6 @@ namespace Yummy_Food_API.Controllers
             {
                 ModelState.AddModelError("file", "Unsupported file extension");
             }
-
             if (request.File.Length > 10485760)
             {
                 ModelState.AddModelError("file", "File size more than 10MB, please upload a smaller file size.");
