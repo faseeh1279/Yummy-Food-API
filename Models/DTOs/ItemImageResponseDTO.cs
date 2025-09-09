@@ -2,7 +2,7 @@
 {
     public class ItemImageResponseDTO
     {
-        public string FileName { get; set; }
+        public Guid ImageId { get; set; }
         public string FilePath { get; set; }
     }
 }

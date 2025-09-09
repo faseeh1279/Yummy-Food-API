@@ -13,6 +13,22 @@
     {
       "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\domain\\itemimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\domain\\itemimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\dtos\\itemimagedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\dtos\\itemimagedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\dtos\\itemimageresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\dtos\\itemimageresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\dtos\\itemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\dtos\\itemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -32,9 +48,9 @@
               "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
               "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Controllers\\AdminController.cs",
               "RelativeToolTip": "Controllers\\AdminController.cs",
-              "ViewState": "AgIAAHkAAAAAAAAAAAAIwIkAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAALkAAAAAAAAAAAAowNwAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-08T22:49:27.276Z",
+              "WhenOpened": "2025-09-09T09:56:10.392Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
@@ -46,9 +62,23 @@
               "RelativeDocumentMoniker": "Services\\AdminService.cs",
               "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Services\\AdminService.cs",
               "RelativeToolTip": "Services\\AdminService.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAA7wEsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAYwGAAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-08T22:49:41.252Z",
+              "WhenOpened": "2025-09-09T10:03:34.218Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AdminRepository.cs",
+              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Repositories\\AdminRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\AdminRepository.cs",
+              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Repositories\\AdminRepository.cs",
+              "RelativeToolTip": "Repositories\\AdminRepository.cs",
+              "ViewState": "AgIAAH8AAAAAAAAAAADwv4wAAABkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-09T10:06:03.354Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
@@ -66,15 +96,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AdminRepository.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Repositories\\AdminRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\AdminRepository.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Repositories\\AdminRepository.cs",
-              "RelativeToolTip": "Repositories\\AdminRepository.cs",
-              "ViewState": "AgIAAGkAAAAAAAAAAAAUwIgAAAA1AAAAAAAAAA==",
+              "DocumentIndex": 6,
+              "Title": "ItemDTO.cs",
+              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemDTO.cs",
+              "RelativeDocumentMoniker": "Models\\DTOs\\ItemDTO.cs",
+              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemDTO.cs",
+              "RelativeToolTip": "Models\\DTOs\\ItemDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-08T22:50:21.01Z",
+              "WhenOpened": "2025-09-09T10:14:50.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ItemImageDTO.cs",
+              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemImageDTO.cs",
+              "RelativeDocumentMoniker": "Models\\DTOs\\ItemImageDTO.cs",
+              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemImageDTO.cs",
+              "RelativeToolTip": "Models\\DTOs\\ItemImageDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-09T10:12:38.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ItemImage.cs",
+              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\Domain\\ItemImage.cs",
+              "RelativeDocumentMoniker": "Models\\Domain\\ItemImage.cs",
+              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\Domain\\ItemImage.cs",
+              "RelativeToolTip": "Models\\Domain\\ItemImage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAUAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-09T10:18:20.734Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ItemImageResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemImageResponseDTO.cs",
+              "RelativeDocumentMoniker": "Models\\DTOs\\ItemImageResponseDTO.cs",
+              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemImageResponseDTO.cs",
+              "RelativeToolTip": "Models\\DTOs\\ItemImageResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-09T11:03:17.912Z",
               "EditorCaption": ""
             }
           ]

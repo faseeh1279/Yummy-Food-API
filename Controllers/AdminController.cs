@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Yummy_Food_API.Models.Domain;
 using Yummy_Food_API.Models.DTOs;
 using Yummy_Food_API.Repositories.Interfaces;
@@ -16,11 +17,16 @@ namespace Yummy_Food_API.Controllers
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IAdminService _adminService;
-        public AdminController(IAdminRepository adminRepository,
-            IAdminService adminService)
+        private readonly ApplicationDBContext _dbContext;
+        public AdminController(
+            IAdminRepository adminRepository,
+            IAdminService adminService,
+            ApplicationDBContext dbContext 
+            )
         {
             _adminRepository = adminRepository;
             _adminService = adminService;
+            _dbContext = dbContext;
         }
 
         [HttpPost("AddCategory")]
@@ -112,35 +118,107 @@ namespace Yummy_Food_API.Controllers
 
             if (ModelState.IsValid)
             {
-                // User Repository to upload Image
-                var itemImageModel = new ItemImage
+                var item = await _dbContext.Items.FirstOrDefaultAsync(i => i.Id == request.ItemId); 
+                if(item!= null)
                 {
-                    ItemId = request.ItemId,
-                    FileName = request.FileName,
-                    FileDescription = request.FileDescription,
-                    FileExtension = Path.GetExtension(request.File.FileName),
-                    FileSizeInBytes = request.File.Length,
-                    FormFile = request.File   // <-- Important mapping
-                };
-                var result = await _adminRepository.Upload(itemImageModel);
-                return Ok(result);
+                    // User Repository to upload Image
+                    var itemImageModel = new ItemImage
+                    {
+                        Id = Guid.NewGuid(),
+                        ItemId = request.ItemId,
+                        FileName = item.Name,
+                        FileDescription = item.Description,
+                        FileExtension = Path.GetExtension(request.File.FileName),
+                        FileSizeInBytes = request.File.Length,
+                        FormFile = request.File   // <-- Important mapping
+                    };
+                    var result = await _adminRepository.Upload(itemImageModel);
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest($"Item with {request.ItemId} does not exists!"); 
+                }
             }
             return BadRequest(ModelState);
         }
 
         [HttpGet]
-        [Route("Get-Item-Image/{id}")]
-        public IActionResult GetImage([FromRoute] Guid id)
+        [Route("Get-Item-Image/{ImageId}")]
+        public async Task<IActionResult> GetImage([FromRoute] Guid ImageId)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", "Item-Images", id.ToString());
+            var image = await _dbContext.ItemImages.FirstOrDefaultAsync(i => i.Id == ImageId);
+            if(image != null)
+            {
+                var fileNameWithExt = image.Id + image.FileExtension; 
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", "Item-Images", fileNameWithExt);
+                if (!System.IO.File.Exists(filePath))
+                    return NotFound();
+                var imageBytes = System.IO.File.ReadAllBytes(filePath);
+                var contentType = "image/" + Path.GetExtension(filePath).Trim('.'); // jpg, png, etc.
+                return File(imageBytes, contentType);
+            }
+            else
+            {
+                return BadRequest("Item Not Found"); 
+            }
+                        
 
-            if (!System.IO.File.Exists(filePath))
-                return NotFound();
+        }
 
-            var imageBytes = System.IO.File.ReadAllBytes(filePath);
-            var contentType = "image/" + Path.GetExtension(filePath).Trim('.'); // jpg, png, etc.
+        [HttpPut]
+        [Route("Update-Item-Image/{ImageId}")]
+        public async Task<IActionResult> UpdateItemImage([FromRoute] Guid ImageId, IFormFile itemImage)
+        {
+            var image = await _dbContext.ItemImages.FirstOrDefaultAsync(i => i.Id == ImageId); 
+            if(image != null)
+            {
+                var fileNameWithExt = image.Id + image.FileExtension;
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images/Item-Images", fileNameWithExt);
+                var localFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Images/Item-Images", fileNameWithExt); 
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                    image.FileSizeInBytes = itemImage.Length;
+                    image.FileExtension = Path.GetExtension(itemImage.FileName);
+                    image.FormFile = itemImage;
 
-            return File(imageBytes, contentType);
+                    // Save the file
+                    using var stream = new FileStream(localFilePath, FileMode.Create);
+                    await image.FormFile.CopyToAsync(stream);
+
+                    await _dbContext.SaveChangesAsync();
+                    return Ok("Image Updated Successfully!"); 
+                }
+                return BadRequest("Image Not Found"); 
+            }
+            else
+            {
+                return BadRequest("Image Not Found"); 
+            }
+        }
+
+        [HttpDelete]
+        [Route("Delete-Item-Image/{ImageId}")]
+        public async Task<IActionResult> DeleteImageAsync([FromRoute] Guid ImageId)
+        {
+            var image = await _dbContext.ItemImages.FindAsync(ImageId); 
+            if (image != null)
+            {
+                var fileNameWithExt = image.Id + image.FileExtension;
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images/Item-Images", fileNameWithExt);
+                var localFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Images/Item-Images", fileNameWithExt);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+
+                    _dbContext.ItemImages.Remove(image); 
+                    await _dbContext.SaveChangesAsync();
+                    return Ok("Image Removed Successfully!");
+                }
+                return BadRequest("Image Not Found");
+            }
+            return BadRequest("Image Not Found"); 
         }
 
         [HttpGet]
@@ -151,12 +229,7 @@ namespace Yummy_Food_API.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        [Route("Update-Item-Image")]
-        public async Task<IActionResult> UpdateItemImage([FromQuery] Guid ImageId, [FromForm] ItemImageDTO request)
-        {
-            return Ok("");
-        }
+        
 
         private void ValidateFileUpload(ItemImageDTO request)
         {

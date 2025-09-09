@@ -68,7 +68,6 @@ namespace Yummy_Food_API.Services
             return result; 
         }
 
-
         public async Task<List<Order>> GetAllOrdersAsync()
         {
             return await _adminRepository.GetAllOrdersAsync();
@@ -95,15 +94,11 @@ namespace Yummy_Food_API.Services
             return result; 
         }
 
-
-
         public async Task<string> UpdateItemAsync(Guid id, ItemDTO itemDTO)
         {
             var result = await _adminRepository.UpdateItemAsync(id, itemDTO);
             return result;
         }
-
-
 
         private ItemResponseDTO BindItemWithReleventImages(Item item, List<ItemImage> itemImages)
         {
@@ -114,7 +109,7 @@ namespace Yummy_Food_API.Services
                 {
                     images.Add(new ItemImageResponseDTO
                     {
-                        FileName = image.FileName, 
+                        ImageId = image.Id,
                         FilePath = image.FilePath,
                     });
                 }
@@ -143,7 +138,7 @@ namespace Yummy_Food_API.Services
                     .Where(img => img.ItemId == item.Id)
                     .Select(img => new ItemImageResponseDTO
                     {
-                        FileName = img.FileName,
+                        ImageId = img.Id,
                         FilePath = img.FilePath
                     })
                     .ToList();
