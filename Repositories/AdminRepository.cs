@@ -129,8 +129,8 @@ namespace Yummy_Food_API.Repositories
             }
 
             // Add extension to the file name
-            var fileNameWithExt = $"{image.FileName}{image.FileExtension}";
-            var localFilePath = Path.Combine(folderPath, image.ItemId.ToString());
+            var fileNameWithExt = $"{image.Id}{image.FileExtension}";
+            var localFilePath = Path.Combine(folderPath, fileNameWithExt);
 
             // Save the file
             using var stream = new FileStream(localFilePath, FileMode.Create);
@@ -138,7 +138,7 @@ namespace Yummy_Food_API.Repositories
 
             // Build URL
             var request = _httpContextAccessor.HttpContext.Request;
-            var urlFilePath = $"{request.Scheme}://{request.Host}/api/Admin/Get-Item-Image/{image.ItemId}";
+            var urlFilePath = $"{request.Scheme}://{request.Host}/api/Admin/Get-Item-Image/{image.Id}";
 
             image.FilePath = urlFilePath;
 
@@ -216,5 +216,10 @@ namespace Yummy_Food_API.Repositories
                 return "Item Not Found!"; 
             }
         }
+
+        //public async Task<ItemImageDTO> GetItemImageAsync(Guid Id)
+        //{
+
+        //}
     }
 }
