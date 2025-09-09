@@ -217,9 +217,5 @@ namespace Yummy_Food_API.Repositories
             }
         }
 
-        //public async Task<ItemImageDTO> GetItemImageAsync(Guid Id)
-        //{
-
-        //}
     }
 }

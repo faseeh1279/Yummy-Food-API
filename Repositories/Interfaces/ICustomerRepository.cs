@@ -7,5 +7,6 @@ namespace Yummy_Food_API.Repositories.Interfaces
         Task<List<Item>> GetAllItemsAsync();
         Task<List<ItemCategory>> GetAllItemCategoriesAsync();
         Task<Order> PlaceOrderAsync(Order order);
+        Task<List<ItemImage>> GetAllItemImagesAsync();
     }
 }

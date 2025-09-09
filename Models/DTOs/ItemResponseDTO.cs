@@ -8,6 +8,7 @@
         public string Description { get; set; } 
         public decimal Discount { get; set; } 
         public string Category { get; set; } 
+        public decimal FinalPrieWithDiscount { get; set; } 
         public List<ItemImageResponseDTO> Images { get; set; }
     }
 }
