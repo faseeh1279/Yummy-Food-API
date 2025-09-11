@@ -28,7 +28,7 @@ namespace Yummy_Food_API.Services
         {
             var user = new User
             {
-                Username = loginDTO.Name,
+                Username = loginDTO.Username,
                 Email = loginDTO.Email
             };
             var userResult = await _authRepository.GetUserAsync(user); // returns a string or null
@@ -82,14 +82,13 @@ namespace Yummy_Food_API.Services
 
         }
 
-
-        public async Task<User> SignUp(SignUpDTO signUpDTO)
+        public async Task<string> SignUp(SignUpDTO signUpDTO)
         {
             var hashedPassword = _tokenService.HashPassword(signUpDTO.Password); // Hash the password before saving it
             var user = new User
             {
                 Id = Guid.NewGuid(),
-                Username = signUpDTO.Name,
+                Username = signUpDTO.Username,
                 Email = signUpDTO.Email,
                 PhoneNumber = signUpDTO.PhoneNumber,
                 HashedPassword = hashedPassword, // Store the hashed password
@@ -118,7 +117,7 @@ namespace Yummy_Food_API.Services
                 {
                     var loginDTO = new LoginDTO
                     {
-                        Name = userData.Username,
+                        Username = userData.Username,
                         Email = userData.Email
                     }; 
                     var response = _tokenService.GenerateJSONWebToken(loginDTO);

@@ -17,27 +17,46 @@ namespace Yummy_Food_API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("signup")]
+        [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
         {
-            var result = await _authService.SignUp(signUpDTO);
-            return Ok(result);
+            if (ModelState.IsValid)
+            {
+                var result = await _authService.SignUp(signUpDTO);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("All Fields are required"); 
+            }
         }
 
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            var result = await _authService.Login(loginDTO);
-            return Ok(result);
+            if (ModelState.IsValid)
+            {
+                var result = await _authService.Login(loginDTO);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest("All Fields are required"); 
+            }
         }
 
         [AllowAnonymous]
         [HttpPost("Generate-Access-Token")]
-        public async Task<IActionResult> GenerateAccessToken([FromBody] string refreshToken)
+        public async Task<IActionResult> GenerateAccessToken([FromBody] RefreshTokenDTO refreshTokenDTO)
         {
-            var result = await _authService.GenerateNewAccessToken(refreshToken);
-            return Ok(result);
+            if (ModelState.IsValid)
+            {
+                var result = await _authService.GenerateNewAccessToken(refreshTokenDTO.accessToken);
+                return Ok(result);
+            }
+            else
+                return BadRequest("All Fields are required"); 
         }
     }
 }

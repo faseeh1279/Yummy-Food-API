@@ -8,8 +8,6 @@ namespace Yummy_Food_API.Models.DTOs
     {
         [Required]
         public string CustomerName { get; set; }
-        [Required]
-        public string CustomerPhone { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime CompletedAt { get; set; }
         public decimal TotalPrice { get; set; }

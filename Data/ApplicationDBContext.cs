@@ -15,7 +15,8 @@ namespace Yummy_Food_API
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ItemImage> ItemImages { get; set; }
-
+        public DbSet<OrderItem> OrderItems { get; set; }
+ 
         // Relationships 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

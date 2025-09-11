@@ -19,6 +19,13 @@ namespace Yummy_Food_API.Controllers
             _hubContext = hubContext; 
         }
 
+        //[HttpPost("Apply-For-Rider")]
+        //public async Task<IActionResult> ApplyForRider()
+        //{
+        //    //await _hubContext.Clients.User().SendAsync("ReceiveMessage", payload); 
+        //    return Ok(""); 
+        //}
+
         [HttpPost("send")]
         public async Task<IActionResult> SendData([FromBody] OrderNotificationDTO payload)
         {

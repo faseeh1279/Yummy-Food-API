@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Identity.Client;
+using System.Security.Claims;
+using Yummy_Food_API.Models.DTOs;
 using Yummy_Food_API.Repositories.Interfaces;
 using Yummy_Food_API.Services.Interfaces;
 using Yummy_Food_API.Services.Realtime;
@@ -11,20 +14,17 @@ namespace Yummy_Food_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin, Customer")]
+    [Authorize(Roles = "Customer")]
     public class CustomerController : ControllerBase
     {
-        private readonly ICustomerRepository _customerRepository;
         private readonly ICustomerService _customerService;
         private readonly OrderNotificationService _orderNotificationService;
         //private static HubConnection? _connection;
         //private static List<object> _receivedData = new();
         public CustomerController(
-            ICustomerRepository customerRepository,
             ICustomerService customerService,
             OrderNotificationService orderNotificationService)
         {
-            _customerRepository = customerRepository;
             _customerService = customerService;
             _orderNotificationService = orderNotificationService;
         }
@@ -46,6 +46,40 @@ namespace Yummy_Food_API.Controllers
             //};
             await _orderNotificationService.BroadCastMessageAsync(result);
                 return Ok("Message sent!");
+        }
+
+        [HttpGet]
+        [Route("Get-All-Items")]
+        public async Task<IActionResult> GetAllItemsAsync()
+        {
+            var result = await _customerService.GetAllItemsListAsync();
+            if (result!=null)
+            {
+                return Ok(result); 
+            }
+            else
+            {
+                return BadRequest("No Result"); 
+            }
+        }
+
+        [HttpPost]
+        [Route("Place-Order")]
+        public async Task<IActionResult> PlaceOrderAsync(List<OrderItemsDTO> orderItemsDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
+                //var role = User.FindFirst(ClaimTypes.Role)?.Value;
+                var result = await _customerService.PlaceOrderAsync(orderItemsDTO, userEmail);
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+            
         }
     }
 }

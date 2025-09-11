@@ -1,14 +1,16 @@
-﻿using Yummy_Food_API.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using Yummy_Food_API.Enums;
 
 namespace Yummy_Food_API.Models.DTOs
 {
     public class LoginDTO
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string? PhoneNumber { get; set; } 
+        [Required]
+        public string Username { get; set; }
+        [Required]
+        public string Email { get; set; } 
+        [Required]
         public string? Password { get; set; } 
-        public UserRole? Role { get; set; } 
 
     }
 }

@@ -8,8 +8,6 @@ namespace Yummy_Food_API.Models.Domain
         [Key]
         public Guid Id { get; set;  }
         public Guid UserId { get; set; }  // FK to User
-        //public string PhoneNumber { get; set; }
-        //public string HashedPassword { get; set; } = string.Empty;
         public ComplaintStatus ComplaintStatus { get; set; } = ComplaintStatus.Pending;
         // Navigation
         public User User { get; set; }

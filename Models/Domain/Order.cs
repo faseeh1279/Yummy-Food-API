@@ -7,8 +7,6 @@ namespace Yummy_Food_API.Models.Domain
     {
         [Key]
         public Guid Id { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerPhone { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime CompletedAt { get; set; }
         public decimal TotalPrice { get; set; }
@@ -17,7 +15,6 @@ namespace Yummy_Food_API.Models.Domain
         public Guid CustomerProfileId { get; set; }
         public CustomerProfile CustomerProfile { get; set; }
         public Guid? RiderProfileId { get; set; }
-
         public RiderProfile Rider { get; set; }
         public ICollection<Item> Items { get; set; }
 

@@ -54,7 +54,6 @@ namespace Yummy_Food_API.Services
 
         public async Task<List<object>> GetAllCategoriesAsync()
         {
-            //return await _adminRepository.GetAllCategoriesAsync();
             var data = await _adminRepository.GetAllCategoriesAsync();
             var result = new List<object>(); 
             foreach(var item in data)

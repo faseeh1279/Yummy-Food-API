@@ -1,4 +1,5 @@
 ﻿using Yummy_Food_API.Models.Domain;
+using Yummy_Food_API.Models.DTOs;
 
 namespace Yummy_Food_API.Repositories.Interfaces
 {
@@ -6,7 +7,8 @@ namespace Yummy_Food_API.Repositories.Interfaces
     {
         Task<List<Item>> GetAllItemsAsync();
         Task<List<ItemCategory>> GetAllItemCategoriesAsync();
-        Task<Order> PlaceOrderAsync(Order order);
+        Task<string> PlaceOrderAsync(List<OrderItemsDTO> orderItemsDTOs, string userEmail);
         Task<List<ItemImage>> GetAllItemImagesAsync();
+        Task<List<Order>> GetAllOrdersAsync();
     }
 }

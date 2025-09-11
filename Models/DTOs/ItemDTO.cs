@@ -12,4 +12,10 @@ namespace Yummy_Food_API.Models.DTOs
         public string Category { get; set; }
 
     }
+
+
+    public class PlaceOrderDTO
+    {
+        
+    }
 }

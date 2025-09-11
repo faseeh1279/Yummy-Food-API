@@ -12,18 +12,19 @@ namespace Yummy_Food_API.Repositories
     public class AuthRepository : IAuthRepository
     {
         private readonly ApplicationDBContext _dbContext;
-        private readonly ITokenService _tokenService;
-        public AuthRepository(ApplicationDBContext context, ITokenService tokenService)
+        public AuthRepository(ApplicationDBContext context)
         {
             _dbContext = context;
-            _tokenService = tokenService;
         }
 
-        public async Task<User> SignUp(User user)
+        public async Task<string> SignUp(User user)
         {
+            var userExists = await _dbContext.Users.AnyAsync(u => u.Email == user.Email);
+            if (userExists)
+                return $"User with this email {user.Email} already exists."; 
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
-            return user;
+            return "User Added Successfully";
         }
         public async Task<User> GetUserAsync(User user)
         {

@@ -15,12 +15,17 @@ namespace Yummy_Food_API.Services
             _customerRepository = customerRepository;
         }
 
-        public async Task GetAllItemsListAsync()
+        public async Task<string> PlaceOrderAsync(List<OrderItemsDTO> orderItemsDTOs, string userEmail)
+        {
+            return await _customerRepository.PlaceOrderAsync(orderItemsDTOs, userEmail);
+        }
+        public async Task<IEnumerable<ItemResponseDTO>> GetAllItemsListAsync()
         {
             var items = await _customerRepository.GetAllItemsAsync();
             var itemCategories = await _customerRepository.GetAllItemCategoriesAsync();
             var itemImages = await _customerRepository.GetAllItemImagesAsync();
-            var result = ConvertItemAndImagesToResponse(items, itemImages, itemCategories); 
+            var result = ConvertItemAndImagesToResponse(items, itemImages, itemCategories);
+            return result; 
         }
 
         private IEnumerable<ItemResponseDTO> ConvertItemAndImagesToResponse(List<Item> items, List<ItemImage> itemImages, List<ItemCategory> itemCategories)
@@ -37,16 +42,34 @@ namespace Yummy_Food_API.Services
                         FilePath = img.FilePath
                     })
                     .ToList();
-
-                itemResponses.Add(new ItemResponseDTO
+                if (item.Discount == 0)
                 {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Price = item.Price,
-                    Description = item.Description,
-                    Category = item.ItemCategory.Category, // TODO: fetch from itemCategories
-                    Images = imagesForItem
-                });
+                    itemResponses.Add(new ItemResponseDTO
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        Price = item.Price,
+                        Description = item.Description,
+                        Discount = item.Discount,
+                        FinalPrieWithDiscount = item.Price,
+                        Category = item.ItemCategory.Category, // TODO: fetch from itemCategories
+                        Images = imagesForItem
+                    });
+                }
+                else
+                {
+                    itemResponses.Add(new ItemResponseDTO
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        Price = item.Price,
+                        Description = item.Description,
+                        Discount = item.Discount,
+                        FinalPrieWithDiscount = item.Price - (item.Price * item.Discount / 100),
+                        Category = item.ItemCategory.Category, // TODO: fetch from itemCategories
+                        Images = imagesForItem
+                    });
+                }
             }
 
             return itemResponses;

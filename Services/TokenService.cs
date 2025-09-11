@@ -21,11 +21,11 @@ namespace Yummy_Food_API.Services
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            if (loginDTO.Name == "admin" && loginDTO.Password == "ntsh1234")
+            if (loginDTO.Username == "admin" && loginDTO.Password == "ntsh1234")
             {
                 var claims = new[]
                 {
-                new Claim(JwtRegisteredClaimNames.Sub, loginDTO.Name),
+                new Claim(JwtRegisteredClaimNames.Sub, loginDTO.Username),
                 new Claim(JwtRegisteredClaimNames.Email, loginDTO.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Role, "Admin")
@@ -44,7 +44,7 @@ namespace Yummy_Food_API.Services
             {
                 var claims = new[]
                 {
-                new Claim(JwtRegisteredClaimNames.Sub, loginDTO.Name),
+                new Claim(JwtRegisteredClaimNames.Sub, loginDTO.Username),
                 new Claim(JwtRegisteredClaimNames.Email, loginDTO.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                  new Claim(ClaimTypes.Role, "Customer")
