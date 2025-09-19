@@ -16,11 +16,17 @@ var builder = WebApplication.CreateBuilder(args);
 var connection = new HubConnectionBuilder()
     .WithUrl("https://localhost:7284/chatHub")
     .Build();
-
-
-
 // Add services to the container.
 builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler =
+            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+
+
 builder.Services.AddHttpContextAccessor();
 
 // Add SignalR
@@ -30,13 +36,15 @@ builder.Services.AddSignalR();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IRiderRepository, RiderRepository>(); 
 
 // Add Services 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddSingleton<OrderNotificationService>(); 
+builder.Services.AddScoped<IRiderService, RiderService>(); 
+builder.Services.AddSingleton<AppHub>(); 
 // Add Mappings 
 
 // Database Injecting & Add Database context 
@@ -136,7 +144,7 @@ app.UseStaticFiles();
 app.MapControllers();
 
 // Mapping SignalR Classes
-app.MapHub<OrderHub>("/chatHub");
+app.MapHub<AppHub>("/chatHub");
 
 
 app.Run();

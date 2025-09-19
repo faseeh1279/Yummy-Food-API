@@ -40,7 +40,7 @@ namespace Yummy_Food_API.Services
                 var result = _tokenService.VerifyPassword(userResult.HashedPassword, loginDTO.Password);
                 if (result)
                 {
-                    var accessToken = _tokenService.GenerateJSONWebToken(loginDTO);
+                    var accessToken = await _tokenService.GenerateJSONWebToken(loginDTO);
                     var refreshToken = _tokenService.GenerateRefreshToken();
 
                     var token = new RefreshToken
@@ -120,7 +120,7 @@ namespace Yummy_Food_API.Services
                         Username = userData.Username,
                         Email = userData.Email
                     }; 
-                    var response = _tokenService.GenerateJSONWebToken(loginDTO);
+                    var response = await _tokenService.GenerateJSONWebToken(loginDTO);
                     return response; 
                 }
                 else

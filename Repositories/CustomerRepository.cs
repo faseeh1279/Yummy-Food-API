@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using Yummy_Food_API.Enums;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Yummy_Food_API.Models.Domain;
-using Yummy_Food_API.Models.DTOs;
 using Yummy_Food_API.Repositories.Interfaces;
 
 namespace Yummy_Food_API.Repositories
@@ -18,7 +16,7 @@ namespace Yummy_Food_API.Repositories
         {
             return await _dbContext.Items.ToListAsync(); 
         }
-        public async Task<List<ItemCategory>> GetAllItemCategoriesAsync()
+        public async Task<List<ItemCategory>> GetAllCategoriesAsync()
         {
             return await _dbContext.ItemCategories.ToListAsync(); 
         }
@@ -33,64 +31,62 @@ namespace Yummy_Food_API.Repositories
                 return result;
             return null; 
         }
-        public async Task<string> PlaceOrderAsync(List<OrderItemsDTO> orderItemsDTOs, string userEmail)
+        public async Task<User?> GetUserAsync(string userEmail)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
-            var customerProfile = await _dbContext.CustomerProfiles.FirstOrDefaultAsync(u => u.UserId == user!.Id); 
-            if(customerProfile == null)
+            var result = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (result!=null)
+                return result;
+            return null; 
+        } 
+        public async Task<Order?> DeleteOrderAsync(Guid orderId)
+        {
+            var result = await _dbContext.Orders.FirstOrDefaultAsync(o => o.Id == orderId); 
+            if(result != null)
             {
-                var cProfile = new CustomerProfile
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = user!.Id,
-                }; 
-                await _dbContext.CustomerProfiles.AddAsync(cProfile);
-                await _dbContext.SaveChangesAsync(); 
-            }
-
-            var orderExists = await _dbContext.Orders.AnyAsync(
-                o => o.CustomerProfileId == user!.Id
-            && o.OrderStatus == Enums.OrderStatus.Pending
-            ); 
-          
-            if (orderExists)
-            {
-                return "You have a pending Order"; 
-            }
-            else
-            {
-               
-                var order = new Order
-                {
-                    Id = Guid.NewGuid(),
-                    CreatedAt = DateTime.Now,
-                    CompletedAt = DateTime.MinValue,
-                    OrderStatus = Enums.OrderStatus.Pending,
-                    CustomerProfileId = customerProfile!.Id,
-                    RiderProfileId = null,
-                };
-                decimal price = 0;
-                var orderItems = new List<OrderItem>(); 
-                foreach (var o in orderItemsDTOs)
-                {
-                    price += o.UnitPrice * o.Quantity;
-                    orderItems.Add(new OrderItem
-                    {
-                        Id = Guid.NewGuid(),
-                        OrderId = order.Id, 
-                        ItemId = o.ItemId, 
-                        UnitPrice = o.UnitPrice, 
-                        Quantity = o.Quantity,
-                    }); 
-                }
-               
-                order.TotalPrice = price;
-                await _dbContext.OrderItems.AddRangeAsync(orderItems);
+                _dbContext.Orders.Remove(result);
                 await _dbContext.SaveChangesAsync();
-                await _dbContext.Orders.AddAsync(order); 
-                await _dbContext.SaveChangesAsync();
-                return "Order Placed."; 
+                return result; 
             }
+            return null; 
         }
+        public async Task<Order> PlaceOrderAsync(Order order)
+        {
+            var result = await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
+            return result.Entity; 
+        }
+        public async Task<CustomerProfile?> GetCustomerProfileAsync(Guid userId)
+        {
+            var result = await _dbContext.CustomerProfiles.FirstOrDefaultAsync(cp => cp.UserId == userId);
+            if (result != null)
+                return result;
+            return null; 
+        }
+        public async Task AddOrderItemsRangeAsync(List<OrderItem> items)
+        {
+            await _dbContext.OrderItems.AddRangeAsync(items); 
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task UpdateOrderAsync(Order order)
+        {
+           _dbContext.Orders.Update(order);
+           await _dbContext.SaveChangesAsync();
+        }
+        public async Task<CustomerProfile> AddCustomerProfileAsync(CustomerProfile customerProfile)
+        {
+            var result = await _dbContext.CustomerProfiles.AddAsync(customerProfile);
+            return result.Entity; 
+        }
+        public async Task<Order> GetPendingOrderByCustomerAsync(Guid customerProfileId)
+        {
+            var result = await _dbContext.Orders.FirstOrDefaultAsync(o => o.CustomerProfileId == customerProfileId);
+            return result; 
+        }
+        public async Task<List<Order>> GetOrderHistoryAsync(Guid customerProfileId)
+        {
+            var result = await _dbContext.Orders.Where(o => o.CustomerProfileId == customerProfileId).ToListAsync();
+            return result; 
+        }
+
     }
 }

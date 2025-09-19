@@ -11,6 +11,7 @@ namespace Yummy_Food_API.Models.Domain
         public DateTime CompletedAt { get; set; }
         public decimal TotalPrice { get; set; }
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
+        public string Address { get; set; } 
         // Foreign Keys
         public Guid CustomerProfileId { get; set; }
         public CustomerProfile CustomerProfile { get; set; }

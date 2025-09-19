@@ -8,7 +8,5 @@ namespace Yummy_Food_API.Models.DTOs
         public Guid ItemId { get; set; }
         [Required]
         public int Quantity { get; set; }
-        [Required]
-        public decimal UnitPrice { get; set; }
     }
 }

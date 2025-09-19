@@ -4,7 +4,7 @@ namespace Yummy_Food_API.Services.Interfaces
 {
     public interface ITokenService
     {
-        string GenerateJSONWebToken(LoginDTO loginDTO);
+        Task<string> GenerateJSONWebToken(LoginDTO loginDTO);
         string HashPassword(string password);
         bool VerifyPassword(string hashedPassword, string enteredPassword);
         string GenerateRefreshToken();

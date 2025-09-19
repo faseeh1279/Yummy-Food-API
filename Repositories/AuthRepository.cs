@@ -17,6 +17,11 @@ namespace Yummy_Food_API.Repositories
             _dbContext = context;
         }
 
+        public async Task<List<User>> GetUsersAsync()
+        {
+            return await _dbContext.Users.ToListAsync();
+        }
+
         public async Task<string> SignUp(User user)
         {
             var userExists = await _dbContext.Users.AnyAsync(u => u.Email == user.Email);

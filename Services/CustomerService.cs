@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Yummy_Food_API.Models.Domain;
 using Yummy_Food_API.Models.DTOs;
 using Yummy_Food_API.Repositories;
@@ -14,20 +15,82 @@ namespace Yummy_Food_API.Services
         {
             _customerRepository = customerRepository;
         }
-
-        public async Task<string> PlaceOrderAsync(List<OrderItemsDTO> orderItemsDTOs, string userEmail)
+        public async Task<string> PlaceOrderAsync(List<OrderItemsDTO> orderItemsDTOs, string userEmail, string Address)
         {
-            return await _customerRepository.PlaceOrderAsync(orderItemsDTOs, userEmail);
+            var user = await _customerRepository.GetUserAsync(userEmail);
+            if (user == null) return "User not found";
+
+            var customerProfile = await _customerRepository.GetCustomerProfileAsync(user.Id);
+            if (customerProfile == null) return "Customer profile not found";
+
+            var existingOrder = await _customerRepository.GetPendingOrderByCustomerAsync(customerProfile.Id);
+            if (existingOrder != null)
+            {
+                return "You already have a pending order.";
+            }
+
+            // Create new order
+            var newOrder = new Order
+            {
+                Id = Guid.NewGuid(),
+                CustomerProfileId = customerProfile.Id,
+                CreatedAt = DateTime.UtcNow,
+                TotalPrice = 0, // will update later
+                Address = Address,
+                OrderStatus = Enums.OrderStatus.Pending
+            };
+
+            await _customerRepository.PlaceOrderAsync(newOrder);
+
+            // Fetch only relevant items
+            var itemIds = orderItemsDTOs.Select(d => d.ItemId).ToList();
+            var items = (await _customerRepository.GetAllItemsAsync())
+                            .Where(i => itemIds.Contains(i.Id))
+                            .ToList();
+
+            var orderItems = new List<OrderItem>();
+            decimal totalPrice = 0;
+
+            foreach (var dto in orderItemsDTOs)
+            {
+                var item = items.FirstOrDefault(i => i.Id == dto.ItemId);
+                if (item == null) continue;
+
+                var orderItem = new OrderItem
+                {
+                    Id = Guid.NewGuid(),
+                    OrderId = newOrder.Id,
+                    ItemId = item.Id,
+                    Quantity = dto.Quantity,
+                    UnitPrice = item.Price
+                };
+
+                orderItems.Add(orderItem);
+                totalPrice += item.Price * dto.Quantity;
+            }
+
+            // Save order items
+            await _customerRepository.AddOrderItemsRangeAsync(orderItems);
+
+            // Update total price
+            newOrder.TotalPrice = totalPrice;
+            await _customerRepository.UpdateOrderAsync(newOrder);
+
+            return "Order placed successfully.";
         }
         public async Task<IEnumerable<ItemResponseDTO>> GetAllItemsListAsync()
         {
             var items = await _customerRepository.GetAllItemsAsync();
-            var itemCategories = await _customerRepository.GetAllItemCategoriesAsync();
+            var itemCategories = await _customerRepository.GetAllCategoriesAsync();
             var itemImages = await _customerRepository.GetAllItemImagesAsync();
             var result = ConvertItemAndImagesToResponse(items, itemImages, itemCategories);
-            return result; 
+            return result;
         }
-
+        public async Task<Order?> DeleteOrderAsync(Guid orderId, string userEmail)
+        {
+            var result = await _customerRepository.DeleteOrderAsync(orderId);
+            return result;
+        }
         private IEnumerable<ItemResponseDTO> ConvertItemAndImagesToResponse(List<Item> items, List<ItemImage> itemImages, List<ItemCategory> itemCategories)
         {
             var itemResponses = new List<ItemResponseDTO>();

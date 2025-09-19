@@ -11,5 +11,6 @@ namespace Yummy_Food_API.Repositories.Interfaces
         Task<RefreshToken?> GetRefreshToken(string Token); 
         Task AddRefreshToken(RefreshToken refreshToken);
         Task<User?> GetUserDataByRefreshToken(string refreshToken);
+        Task<List<User>> GetUsersAsync();
     }
 }

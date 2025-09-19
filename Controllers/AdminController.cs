@@ -29,6 +29,8 @@ namespace Yummy_Food_API.Controllers
             _dbContext = dbContext;
         }
 
+
+        
         [HttpPost("AddCategory")]
         public async Task<IActionResult> AddCategoryAsync([FromBody] ItemCategoryDTO itemCategoryDTO)
         {
@@ -39,7 +41,7 @@ namespace Yummy_Food_API.Controllers
             var result = await _adminService.AddCategoryAsync(itemCategoryDTO);
             return Ok(result);
         }
-
+       
         [HttpPut("UpdateCategory")]
         public async Task<IActionResult> UpdateCategoryAsync([FromQuery] Guid CategoryId, [FromBody] ItemCategoryDTO itemCategoryDTO)
         {
@@ -53,7 +55,7 @@ namespace Yummy_Food_API.Controllers
                 return Ok(result);
             }
         }
-
+   
         [HttpDelete]
         [Route("Delete-Category/{CategoryId}")]
         public async Task<IActionResult> DeleteCategoryAsync(Guid CategoryId)
@@ -75,7 +77,7 @@ namespace Yummy_Food_API.Controllers
             var result = await _adminService.GetAllCategoriesAsync();
             return Ok(result);
         }
-
+       
         [HttpPost("AddItem")]
         public async Task<IActionResult> AddItemAsync([FromBody] ItemDTO itemDTO)
         {
@@ -86,7 +88,7 @@ namespace Yummy_Food_API.Controllers
             var result = await _adminService.AddItemAsync(itemDTO);
             return Ok(result);
         }
-
+    
         [HttpPut]
         [Route("Update-Item")]
         public async Task<IActionResult> UpdateItemAsync([FromQuery] Guid itemID, [FromBody] ItemDTO itemDTO)
@@ -101,7 +103,7 @@ namespace Yummy_Food_API.Controllers
                 return Ok(result); 
             }
         }
-
+       
         [HttpDelete]
         [Route("Delete-Item/{id}")]
         public async Task<IActionResult> DeleteItemAsync([FromRoute] Guid Id)
@@ -109,7 +111,7 @@ namespace Yummy_Food_API.Controllers
             var result = await _adminService.DeleteItemAsync(Id);
             return Ok(result);
         }
-
+     
         [HttpPost]
         [Route("Upload-ItemImage")]
         public async Task<IActionResult> UploadItemImage([FromForm] ItemImageDTO request)
@@ -143,6 +145,7 @@ namespace Yummy_Food_API.Controllers
             return BadRequest(ModelState);
         }
 
+        
         [HttpGet]
         [Route("Get-Item-Image/{ImageId}")]
         public async Task<IActionResult> GetImage([FromRoute] Guid ImageId)
@@ -162,10 +165,8 @@ namespace Yummy_Food_API.Controllers
             {
                 return BadRequest("Item Not Found"); 
             }
-                        
-
         }
-
+        
         [HttpPut]
         [Route("Update-Item-Image/{ImageId}")]
         public async Task<IActionResult> UpdateItemImage([FromRoute] Guid ImageId, IFormFile itemImage)
@@ -197,7 +198,7 @@ namespace Yummy_Food_API.Controllers
                 return BadRequest("Image Not Found"); 
             }
         }
-
+       
         [HttpDelete]
         [Route("Delete-Item-Image/{ImageId}")]
         public async Task<IActionResult> DeleteImageAsync([FromRoute] Guid ImageId)
@@ -220,7 +221,7 @@ namespace Yummy_Food_API.Controllers
             }
             return BadRequest("Image Not Found"); 
         }
-
+       
         [HttpGet]
         [Route("Get-All-Items")]
         public async Task<IActionResult> GetAllItemsAsync()
@@ -228,7 +229,14 @@ namespace Yummy_Food_API.Controllers
             var result = await _adminService.GetAllItemsAsync();
             return Ok(result);
         }
-        
+
+        [HttpGet]
+        [Route("Get-All-Orders")]
+        public async Task<IActionResult> GetAllOrdersAsync()
+        {
+            var result = await _adminService.GetAllOrdersAsync();
+            return Ok(result); 
+        }
 
 
         private void ValidateFileUpload(ItemImageDTO request)
