@@ -3,44 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\services\\adminservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:services\\adminservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\repositories\\adminrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:repositories\\adminrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\dtos\\itemresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\dtos\\itemresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\repositories\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:repositories\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\controllers\\ridercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:controllers\\ridercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\domain\\itemimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\domain\\itemimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\dtos\\itemimagedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\dtos\\itemimagedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\dtos\\itemimageresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\dtos\\itemimageresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\models\\dtos\\itemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:models\\dtos\\itemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|c:\\users\\mk laptop\\source\\repos\\yummy-food-api\\hubs\\apphub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{19381A51-BE8D-4121-AC82-2384D5D1F206}|Yummy-Food-API.csproj|solutionrelative:hubs\\apphub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,21 +22,51 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AdminRepository.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Repositories\\AdminRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\AdminRepository.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Repositories\\AdminRepository.cs",
-              "RelativeToolTip": "Repositories\\AdminRepository.cs",
-              "ViewState": "AgIAAHkAAAAAAAAAAAAwwKYAAAAIAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "RiderController.cs",
+              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Controllers\\RiderController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RiderController.cs",
+              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Controllers\\RiderController.cs",
+              "RelativeToolTip": "Controllers\\RiderController.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAQwCAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T10:06:03.354Z",
+              "WhenOpened": "2025-09-19T18:38:04.701Z",
               "IsPinned": true,
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CustomerController.cs",
+              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Controllers\\CustomerController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CustomerController.cs",
+              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Controllers\\CustomerController.cs",
+              "RelativeToolTip": "Controllers\\CustomerController.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAA1wD4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T18:56:19.991Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AppHub.cs",
+              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Hubs\\AppHub.cs",
+              "RelativeDocumentMoniker": "Hubs\\AppHub.cs",
+              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Hubs\\AppHub.cs",
+              "RelativeToolTip": "Hubs\\AppHub.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwBIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-19T19:00:11.016Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Bookmark",
@@ -73,127 +75,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AdminService.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Services\\AdminService.cs",
-              "RelativeDocumentMoniker": "Services\\AdminService.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Services\\AdminService.cs",
-              "RelativeToolTip": "Services\\AdminService.cs",
-              "ViewState": "AgIAAIwAAAAAAAAAAAAmwJcAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T15:14:13.091Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ItemResponseDTO.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemResponseDTO.cs",
-              "RelativeDocumentMoniker": "Models\\DTOs\\ItemResponseDTO.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemResponseDTO.cs",
-              "RelativeToolTip": "Models\\DTOs\\ItemResponseDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T15:12:46.278Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CustomerRepository.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Repositories\\CustomerRepository.cs",
-              "RelativeDocumentMoniker": "Repositories\\CustomerRepository.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Repositories\\CustomerRepository.cs",
-              "RelativeToolTip": "Repositories\\CustomerRepository.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwAgAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T15:10:14.061Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CustomerService.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Services\\CustomerService.cs",
-              "RelativeDocumentMoniker": "Services\\CustomerService.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Services\\CustomerService.cs",
-              "RelativeToolTip": "Services\\CustomerService.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAA6wBgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T15:06:37.775Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CustomerController.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Controllers\\CustomerController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CustomerController.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Controllers\\CustomerController.cs",
-              "RelativeToolTip": "Controllers\\CustomerController.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T15:05:45.094Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ItemDTO.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemDTO.cs",
-              "RelativeDocumentMoniker": "Models\\DTOs\\ItemDTO.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemDTO.cs",
-              "RelativeToolTip": "Models\\DTOs\\ItemDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T10:14:50.061Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ItemImageDTO.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemImageDTO.cs",
-              "RelativeDocumentMoniker": "Models\\DTOs\\ItemImageDTO.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemImageDTO.cs",
-              "RelativeToolTip": "Models\\DTOs\\ItemImageDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T10:12:38.818Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ItemImage.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\Domain\\ItemImage.cs",
-              "RelativeDocumentMoniker": "Models\\Domain\\ItemImage.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\Domain\\ItemImage.cs",
-              "RelativeToolTip": "Models\\Domain\\ItemImage.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAUAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T10:18:20.734Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ItemImageResponseDTO.cs",
-              "DocumentMoniker": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemImageResponseDTO.cs",
-              "RelativeDocumentMoniker": "Models\\DTOs\\ItemImageResponseDTO.cs",
-              "ToolTip": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Models\\DTOs\\ItemImageResponseDTO.cs",
-              "RelativeToolTip": "Models\\DTOs\\ItemImageResponseDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T11:03:17.912Z",
-              "EditorCaption": ""
             }
           ]
         }
