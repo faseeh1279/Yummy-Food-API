@@ -3,7 +3,7 @@ using Yummy_Food_API.Models.DTOs;
 
 namespace Yummy_Food_API.Hubs
 {
-    public class OrderHub : Hub
+    public class AppHub : Hub
     {
         //public async Task SendMessage(string userId, string message)
         //{

@@ -19,33 +19,55 @@ namespace Yummy_Food_API.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-        private readonly IHubContext<AppHub> _hubContext; 
+        private readonly IHubContext<AppHub> _hubContext;
         public CustomerController(
             ICustomerService customerService,
             IHubContext<AppHub> hubContext)
         {
             _customerService = customerService;
-            _hubContext = hubContext; 
+            _hubContext = hubContext;
         }
 
 
-        //[HttpGet("messages")]
-        //public IActionResult GetMessages()
-        //{
-        //    return Ok(_orderNotificationService.ReceivedData);
-        //}
+        /*
+         [HttpPost("broadcast")]
+        public async Task<IActionResult> Broadcast([FromBody] object message)
+        {
+            await _hubContext.Clients.All.SendAsync("OrderState", message);
+            return Ok(new { Status = "Broadcast Sent", Message = message });
+        }
 
-        //[HttpPost("send")]
-        //public async Task<IActionResult> SendMessage([FromBody] object result)
-        //{
-        //    //var result = new
-        //    //{
-        //    //    userId: UserId,
-        //    //    Message: message
-        //    //};
-        //    await _orderNotificationService.BroadCastMessageAsync(result);
-        //        return Ok("Message sent!");
-        //}
+        // 📌 Send to a specific user (by email/userId)
+        [HttpPost("send-to-user")]
+        public async Task<IActionResult> SendToUser(string userId, [FromBody] OrderNotificationDTO dto)
+        {
+            await _hubContext.Clients.User(userId).SendAsync("OrderAccepted", dto);
+            return Ok(new { Status = "Sent to User", User = userId, Data = dto });
+        }
+
+        // 📌 Send to group (all customers or all admins)
+        [HttpPost("send-to-group")]
+        public async Task<IActionResult> SendToGroup(string groupName, string message)
+        {
+            await _hubContext.Clients.Group(groupName).SendAsync("ReceiveGroupMessage", message);
+            return Ok(new { Status = "Sent to Group", Group = groupName, Message = message });
+        }
+         */
+
+        [HttpPost]
+        [Route("send-to-user")]
+        public async Task<IActionResult> SendToUser(string userId, string message)
+        {
+            await _hubContext.Clients.User(userId).SendAsync("OrderAccepted", message);
+            return Ok(new { Status = "Sent to User", User = userId, Data = message });
+        }
+
+        [HttpGet]
+        [Route("Get-Order-Status")]
+        public async Task<IActionResult> GetOrderStatus()
+        {
+            return Ok("");
+        }
 
 
         [HttpPost]
@@ -71,10 +93,9 @@ namespace Yummy_Food_API.Controllers
         {
             var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
             var result = await _customerService.DeleteOrderAsync(OrderId, userEmail);
-            return Ok(result); 
+            return Ok(result);
         }
 
-        
         //[HttpPost("notify-riders")]
         //public async Task<IActionResult> NotifyRiders(string message)
         //{

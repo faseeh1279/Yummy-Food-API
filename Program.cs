@@ -44,7 +44,7 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IRiderService, RiderService>(); 
-builder.Services.AddSingleton<AppHub>(); 
+builder.Services.AddSingleton<Yummy_Food_API.Hubs.AppHub>(); 
 // Add Mappings 
 
 // Database Injecting & Add Database context 
@@ -144,7 +144,7 @@ app.UseStaticFiles();
 app.MapControllers();
 
 // Mapping SignalR Classes
-app.MapHub<AppHub>("/chatHub");
+app.MapHub<Yummy_Food_API.Services.Realtime.AppHub>("/chatHub");
 
 
 app.Run();
