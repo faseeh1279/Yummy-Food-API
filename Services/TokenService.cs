@@ -22,24 +22,21 @@ namespace Yummy_Food_API.Services
             _authRepository = authRepository;
         }
 
-        public async Task<string> GenerateJSONWebToken(LoginDTO loginDTO)
+        public async Task<string> GenerateJSONWebToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var users = await _authRepository.GetUsersAsync();
-            var user = users.FirstOrDefault(u => u.Username == loginDTO.Username
-                                  && u.Email == loginDTO.Email);
 
 
 
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, loginDTO.Username),
-                new Claim(JwtRegisteredClaimNames.Email, loginDTO.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Role, user!.Role.ToString())
-                };
+             };
             var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
             audience: _config["Jwt:Issuer"],

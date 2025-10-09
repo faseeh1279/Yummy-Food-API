@@ -28,47 +28,34 @@ namespace Yummy_Food_API.Controllers
             _hubContext = hubContext;
         }
 
+        //[HttpPost]
+        //[Route("send-to-user")]
+        //public async Task<IActionResult> SendToUser(string userId, string message)
+        //{
+        //    await _hubContext.Clients.User(userId).SendAsync("OrderAccepted", message);
+        //    return Ok(new { Status = "Sent to User", User = userId, Data = message });
+        //}
 
-        /*
-         [HttpPost("broadcast")]
-        public async Task<IActionResult> Broadcast([FromBody] object message)
+        [HttpGet]
+        [Route("Get-All-Items")]
+        public async Task<IActionResult> GetAllItemsAsync()
         {
-            await _hubContext.Clients.All.SendAsync("OrderState", message);
-            return Ok(new { Status = "Broadcast Sent", Message = message });
-        }
-
-        // 📌 Send to a specific user (by email/userId)
-        [HttpPost("send-to-user")]
-        public async Task<IActionResult> SendToUser(string userId, [FromBody] OrderNotificationDTO dto)
-        {
-            await _hubContext.Clients.User(userId).SendAsync("OrderAccepted", dto);
-            return Ok(new { Status = "Sent to User", User = userId, Data = dto });
-        }
-
-        // 📌 Send to group (all customers or all admins)
-        [HttpPost("send-to-group")]
-        public async Task<IActionResult> SendToGroup(string groupName, string message)
-        {
-            await _hubContext.Clients.Group(groupName).SendAsync("ReceiveGroupMessage", message);
-            return Ok(new { Status = "Sent to Group", Group = groupName, Message = message });
-        }
-         */
-
-        [HttpPost]
-        [Route("send-to-user")]
-        public async Task<IActionResult> SendToUser(string userId, string message)
-        {
-            await _hubContext.Clients.User(userId).SendAsync("OrderAccepted", message);
-            return Ok(new { Status = "Sent to User", User = userId, Data = message });
+            var result = await _customerService.GetAllItemsListAsync();
+            if (result == null)
+                return BadRequest(result!.Message); 
+            return Ok(result.Data);
         }
 
         [HttpGet]
         [Route("Get-Order-Status")]
         public async Task<IActionResult> GetOrderStatus()
         {
-            return Ok("");
+            var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
+            var result = await _customerService.GetCurrentPendingOrderAsync(userEmail);
+            if (result.Success)
+                return Ok(result.Data); 
+            return BadRequest(result.Message);
         }
-
 
         [HttpPost]
         [Route("Place-Order")]
@@ -78,29 +65,48 @@ namespace Yummy_Food_API.Controllers
             {
                 var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
                 var result = await _customerService.PlaceOrderAsync(orderItemsDTO, userEmail, Address);
-
-                return Ok(result);
+                if (result.Success)
+                    return Ok(result.Data); 
+                return BadRequest(result.Message);
             }
             else
             {
                 return BadRequest(ModelState);
             }
         }
+        [HttpGet]
+        [Route("Get-Past-Order-History")]
+        public async Task<IActionResult> GetOrderHistoryAsync()
+        {
+            var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
+            var result = await _customerService.GetDeliveredOrderHistory(userEmail);
+            if (result.Success)
+                return Ok(result.Data); 
+            
+            return BadRequest(result.Message);
+        }
 
         [HttpDelete]
-        [Route("Delete-Order")]
+        [Route("Cancel-Order")]
         public async Task<IActionResult> DeleteOrderAsync([FromQuery] Guid OrderId)
         {
             var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
             var result = await _customerService.DeleteOrderAsync(OrderId, userEmail);
-            return Ok(result);
+            if (result.Success)
+                return Ok(result.Data);
+            return BadRequest(result.Message); 
         }
 
-        //[HttpPost("notify-riders")]
-        //public async Task<IActionResult> NotifyRiders(string message)
-        //{
-        //    await _hubContext.Clients.Group("Rider").SendAsync("ReceiveMessage", "System", message);
-        //    return Ok(new { status = "Message sent to all riders", message });
-        //}
+        [HttpGet]
+        [Route("Get-Current-Pending-Order")]
+        public async Task<IActionResult> GetCurrentPendingOrderAsync()
+        {
+            var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
+            var result = await _customerService.GetCurrentPendingOrderAsync(userEmail);
+            if (result.Success)
+                return Ok(result.Data);
+
+            return BadRequest(result.Message); 
+        }
     }
 }

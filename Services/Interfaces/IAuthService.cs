@@ -5,8 +5,8 @@ namespace Yummy_Food_API.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<LoginResultDTO> Login(LoginDTO loginDTO);
-        Task<string> SignUp(SignUpDTO signUpDTO);
-        Task<string> GenerateNewAccessToken(string refreshToken); 
+        Task<ServiceResponse<LoginResultDTO>> Login(LoginDTO loginDTO);
+        Task<ServiceResponse<User>> SignUp(SignUpDTO signUpDTO);
+        Task<ServiceResponse<string>> GenerateNewAccessToken(string refreshToken); 
     }
 }

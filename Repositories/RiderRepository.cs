@@ -21,10 +21,34 @@ namespace Yummy_Food_API.Repositories
             var result = await _dbContext.Orders.ToListAsync();
             return result; 
         } 
-        public async Task AcceptOrderAsync(Order order)
+        public async Task<Order?> UpdateOrderAsync(Order order)
         {
             _dbContext.Orders.Update(order);
-            await _dbContext.SaveChangesAsync(); 
+            var result = await _dbContext.SaveChangesAsync();
+            if (result == 0)
+                return null;
+            return order; 
+        }
+        public async Task<RiderProfile?> GetRiderProfileAsync(Guid userId)
+        {
+            var result = await _dbContext.RiderProfiles.FirstOrDefaultAsync(r => r.UserId == userId);
+            if (result == null)
+                return null;
+            return result; 
+        }
+        public async Task<Order?> FetchPendingOrdersAsync(Guid riderProfileID)
+        {
+            var result = await _dbContext.Orders.FirstOrDefaultAsync(o => o.OrderStatus == Enums.OrderStatus.Pending && o.RiderProfileId == riderProfileID);
+            if (result != null)
+                return result;
+            return null; 
+        }
+        public async Task<Order?> FetchAcceptedOrderAsync(Guid riderProfileID)
+        {
+            var result = await _dbContext.Orders.FirstOrDefaultAsync(o => o.OrderStatus == Enums.OrderStatus.Accepted && o.RiderProfileId == riderProfileID);
+            if (result != null)
+                return result;
+            return null;    
         }
         public async Task<RiderProfile?> CreateRiderProfileAsync(RiderProfile riderProfile)
         {

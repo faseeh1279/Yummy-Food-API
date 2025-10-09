@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Yummy_Food_API.Enums;
 using Yummy_Food_API.Models.Domain;
 using Yummy_Food_API.Models.DTOs;
 using Yummy_Food_API.Repositories.Interfaces;
@@ -21,7 +22,7 @@ namespace Yummy_Food_API.Controllers
         public AdminController(
             IAdminRepository adminRepository,
             IAdminService adminService,
-            ApplicationDBContext dbContext 
+            ApplicationDBContext dbContext
             )
         {
             _adminRepository = adminRepository;
@@ -30,7 +31,7 @@ namespace Yummy_Food_API.Controllers
         }
 
 
-        
+
         [HttpPost("AddCategory")]
         public async Task<IActionResult> AddCategoryAsync([FromBody] ItemCategoryDTO itemCategoryDTO)
         {
@@ -39,9 +40,12 @@ namespace Yummy_Food_API.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _adminService.AddCategoryAsync(itemCategoryDTO);
-            return Ok(result);
+            if (result.Success)
+                return Ok(result.Data);
+
+            return BadRequest(result.Message);
         }
-       
+
         [HttpPut("UpdateCategory")]
         public async Task<IActionResult> UpdateCategoryAsync([FromQuery] Guid CategoryId, [FromBody] ItemCategoryDTO itemCategoryDTO)
         {
@@ -52,32 +56,36 @@ namespace Yummy_Food_API.Controllers
             else
             {
                 var result = await _adminService.UpdateCategoryAsync(CategoryId, itemCategoryDTO);
-                return Ok(result);
+                if (result.Success)
+                    return Ok(result.Data);
+
+                return BadRequest(result.Message);
             }
         }
-   
+
         [HttpDelete]
         [Route("Delete-Category/{CategoryId}")]
         public async Task<IActionResult> DeleteCategoryAsync(Guid CategoryId)
         {
-            if (CategoryId != null)
-            {
-                var result = await _adminService.DeleteCategoryAsync(CategoryId);
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest("Category is Null");
-            }
+
+            var result = await _adminService.DeleteCategoryAsync(CategoryId);
+            if (result.Success)
+                return Ok(result.Data);
+
+            return BadRequest(result.Message);
+
         }
 
         [HttpGet("Get-All-Categories")]
         public async Task<IActionResult> GetAllCategoriesAsync()
         {
             var result = await _adminService.GetAllCategoriesAsync();
-            return Ok(result);
+            if (result.Success)
+                return Ok(result.Data);
+
+            return BadRequest(result.Message);
         }
-       
+
         [HttpPost("AddItem")]
         public async Task<IActionResult> AddItemAsync([FromBody] ItemDTO itemDTO)
         {
@@ -86,9 +94,12 @@ namespace Yummy_Food_API.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _adminService.AddItemAsync(itemDTO);
-            return Ok(result);
+            if (result.Success)
+                return Ok(result.Data);
+
+            return Ok(result.Message);
         }
-    
+
         [HttpPut]
         [Route("Update-Item")]
         public async Task<IActionResult> UpdateItemAsync([FromQuery] Guid itemID, [FromBody] ItemDTO itemDTO)
@@ -100,18 +111,24 @@ namespace Yummy_Food_API.Controllers
             else
             {
                 var result = await _adminService.UpdateItemAsync(itemID, itemDTO);
-                return Ok(result); 
+                if (result.Success)
+                    return Ok(result.Data);
+
+                return BadRequest(result.Message);
             }
         }
-       
+
         [HttpDelete]
         [Route("Delete-Item/{id}")]
         public async Task<IActionResult> DeleteItemAsync([FromRoute] Guid Id)
         {
             var result = await _adminService.DeleteItemAsync(Id);
-            return Ok(result);
+            if (result.Success)
+                return Ok(result.Data);
+
+            return BadRequest(result.Message);
         }
-     
+
         [HttpPost]
         [Route("Upload-ItemImage")]
         public async Task<IActionResult> UploadItemImage([FromForm] ItemImageDTO request)
@@ -120,8 +137,8 @@ namespace Yummy_Food_API.Controllers
 
             if (ModelState.IsValid)
             {
-                var item = await _dbContext.Items.FirstOrDefaultAsync(i => i.Id == request.ItemId); 
-                if(item!= null)
+                var item = await _dbContext.Items.FirstOrDefaultAsync(i => i.Id == request.ItemId);
+                if (item != null)
                 {
                     // User Repository to upload Image
                     var itemImageModel = new ItemImage
@@ -139,21 +156,21 @@ namespace Yummy_Food_API.Controllers
                 }
                 else
                 {
-                    return BadRequest($"Item with {request.ItemId} does not exists!"); 
+                    return BadRequest($"Item with {request.ItemId} does not exists!");
                 }
             }
             return BadRequest(ModelState);
         }
 
-        
+
         [HttpGet]
         [Route("Get-Item-Image/{ImageId}")]
         public async Task<IActionResult> GetImage([FromRoute] Guid ImageId)
         {
             var image = await _dbContext.ItemImages.FirstOrDefaultAsync(i => i.Id == ImageId);
-            if(image != null)
+            if (image != null)
             {
-                var fileNameWithExt = image.Id + image.FileExtension; 
+                var fileNameWithExt = image.Id + image.FileExtension;
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", "Item-Images", fileNameWithExt);
                 if (!System.IO.File.Exists(filePath))
                     return NotFound();
@@ -163,20 +180,20 @@ namespace Yummy_Food_API.Controllers
             }
             else
             {
-                return BadRequest("Item Not Found"); 
+                return BadRequest("Item Not Found");
             }
         }
-        
+
         [HttpPut]
         [Route("Update-Item-Image/{ImageId}")]
         public async Task<IActionResult> UpdateItemImage([FromRoute] Guid ImageId, IFormFile itemImage)
         {
-            var image = await _dbContext.ItemImages.FirstOrDefaultAsync(i => i.Id == ImageId); 
-            if(image != null)
+            var image = await _dbContext.ItemImages.FirstOrDefaultAsync(i => i.Id == ImageId);
+            if (image != null)
             {
                 var fileNameWithExt = image.Id + image.FileExtension;
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images/Item-Images", fileNameWithExt);
-                var localFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Images/Item-Images", fileNameWithExt); 
+                var localFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Images/Item-Images", fileNameWithExt);
                 if (System.IO.File.Exists(filePath))
                 {
                     System.IO.File.Delete(filePath);
@@ -189,21 +206,21 @@ namespace Yummy_Food_API.Controllers
                     await image.FormFile.CopyToAsync(stream);
 
                     await _dbContext.SaveChangesAsync();
-                    return Ok("Image Updated Successfully!"); 
+                    return Ok("Image Updated Successfully!");
                 }
-                return BadRequest("Image Not Found"); 
+                return BadRequest("Image Not Found");
             }
             else
             {
-                return BadRequest("Image Not Found"); 
+                return BadRequest("Image Not Found");
             }
         }
-       
+
         [HttpDelete]
         [Route("Delete-Item-Image/{ImageId}")]
         public async Task<IActionResult> DeleteImageAsync([FromRoute] Guid ImageId)
         {
-            var image = await _dbContext.ItemImages.FindAsync(ImageId); 
+            var image = await _dbContext.ItemImages.FindAsync(ImageId);
             if (image != null)
             {
                 var fileNameWithExt = image.Id + image.FileExtension;
@@ -213,21 +230,23 @@ namespace Yummy_Food_API.Controllers
                 {
                     System.IO.File.Delete(filePath);
 
-                    _dbContext.ItemImages.Remove(image); 
+                    _dbContext.ItemImages.Remove(image);
                     await _dbContext.SaveChangesAsync();
                     return Ok("Image Removed Successfully!");
                 }
                 return BadRequest("Image Not Found");
             }
-            return BadRequest("Image Not Found"); 
+            return BadRequest("Image Not Found");
         }
-       
+
         [HttpGet]
         [Route("Get-All-Items")]
         public async Task<IActionResult> GetAllItemsAsync()
         {
             var result = await _adminService.GetAllItemsAsync();
-            return Ok(result);
+            if (result.Success)
+                return Ok(result.Data);
+            return BadRequest(result.Message); 
         }
 
         [HttpGet]
@@ -235,10 +254,47 @@ namespace Yummy_Food_API.Controllers
         public async Task<IActionResult> GetAllOrdersAsync()
         {
             var result = await _adminService.GetAllOrdersAsync();
-            return Ok(result); 
+            return Ok(result);
         }
 
+        [HttpGet]
+        [Route("Get-All-Complaints")]
+        public async Task<IActionResult> GetAllComplaintsAsync()
+        {
+            var result = await _adminService.FetchAllComplaints();
+            if (result.Success)
+                return Ok(result.Data);
+            return BadRequest(result.Message); 
+        }
 
+        [HttpPut]
+        [Route("Update-Complaint-Status")]
+        public async Task<IActionResult> UpdateComplaintAsync(Guid complaintID, ComplaintStatus complaintStatus)
+        {
+            var result = await _adminService.UpdateComplaintStatus(complaintID, complaintStatus);
+            if (result.Success)
+                return Ok(result.Data);
+            return BadRequest(result.Message); 
+        }
+
+        [HttpGet]
+        [Route("Get-All-Users")]
+        public async Task<IActionResult> GetAllUsersAsync()
+        {
+            var result = await _adminService.GetUsersListAsync();
+            if (result.Success)
+                return Ok(result.Data);
+            return BadRequest(result.Message); 
+        }
+        [HttpPost]
+        [Route("Block-User")]
+        public async Task<IActionResult> BlockUserAsync(Guid userID)
+        {
+            var result = await _adminService.BlockUserAsync(userID);
+            if (result.Success)
+                return Ok(result.Data);
+            return BadRequest(result.Message); 
+        }
         private void ValidateFileUpload(ItemImageDTO request)
         {
             var allowedExtensions = new string[] { ".jpg", ".jpeg", ".png" };

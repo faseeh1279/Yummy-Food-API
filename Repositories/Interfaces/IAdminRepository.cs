@@ -1,24 +1,30 @@
-﻿using Yummy_Food_API.Models.Domain;
+﻿using Yummy_Food_API.Enums;
+using Yummy_Food_API.Models.Domain;
 using Yummy_Food_API.Models.DTOs;
 
 namespace Yummy_Food_API.Repositories.Interfaces
 {
     public interface IAdminRepository
     {
-        // Items
-        Task<string> AddItemAsync(ItemDTO itemDTO);
-        Task<ItemCategory> GetItemCategoryAsync(string Category);
-        Task<string> AddItemCategoryAsync(ItemCategory itemCategory);
-        Task<List<ItemCategory>> GetAllCategoriesAsync();
-        Task<ItemImage> Upload(ItemImage itemImage);
-        Task<List<Order>> GetAllOrdersAsync();
-        Task<List<Complaint>> GetAllComplaintsAsync();
+        Task<ItemCategory> AddCategoryAsync(ItemCategory itemCategory);
+        Task<Item> AddItemAsync(Item item);
+        Task<ItemCategory?> DeleteCategoryAsync(Guid CategoryId);
+        Task<Item?> DeleteItemAsync(Guid id);
+        Task<List<ItemCategory>?> FetchCategoriesAsync();
+        Task<ItemCategory?> FetchCategoryByIdAsync(Guid categoryID);
+        Task<Item?> FetchItemByIdAsync(Guid itemID);
+        Task<List<Item>?> FetchItemsAsync();
+        Task<List<ItemImage>> GetAllItemImagesAsync();
         Task<List<Item>> GetAllItemsAsync();
-        Task<List<ItemImage>> GetAllItemImagesAsync(); 
-        Task<List<ItemCategory>> GetAllItemCategoriesAsync();
-        Task<string> DeleteItemAsync(Guid id);
-        Task<string> UpdateItemAsync(Guid Id, ItemDTO itemDTO);
-        Task<string> UpdateCategoryAsync(Guid CategoryId, string categoryName);
-        Task<string> DeleteCategoryAsync(Guid CategoryId);
+        Task<List<Order>> GetAllOrdersAsync();
+        Task<ItemCategory?> UpdateCategoryAsync(ItemCategory itemCategory);
+        Task<Item?> UpdateItemAsync(Guid Id, Item item);
+        Task<ItemImage> Upload(ItemImage image);
+        Task<List<Order>?> FetchCompletedOrdersAsync();
+        Task<List<Complaint>?> FetchAllComplaintsAsync();
+        Task<Complaint?> UpdateComplaintStatus(Guid complaintID, ComplaintStatus complaintStatus);
+        Task<List<User>?> GetUsersListAsync();
+        Task<User?> GetUserAsync(Guid userID);
+        Task<User?> UpdateUserAsync(User user);
     }
 }

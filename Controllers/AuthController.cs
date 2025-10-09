@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using Yummy_Food_API.Models.DTOs;
 using Yummy_Food_API.Services.Interfaces;
 
@@ -23,7 +24,9 @@ namespace Yummy_Food_API.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _authService.SignUp(signUpDTO);
-                return Ok(result);
+                if (result.Success)
+                    return Ok(result.Data);
+                return BadRequest(result.Message); 
             }
             else
             {
@@ -38,12 +41,11 @@ namespace Yummy_Food_API.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _authService.Login(loginDTO);
-                return Ok(result);
+                if (result.Success)
+                    return Ok(result.Data);
+                return BadRequest(result.Message); 
             }
-            else
-            {
-                return BadRequest("All Fields are required"); 
-            }
+            return BadRequest(ModelState);
         }
 
         [AllowAnonymous]
@@ -53,10 +55,11 @@ namespace Yummy_Food_API.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _authService.GenerateNewAccessToken(refreshTokenDTO.accessToken);
-                return Ok(result);
+                if (result.Success)
+                    return Ok(result.Data);
+                return BadRequest(result.Message); 
             }
-            else
-                return BadRequest("All Fields are required"); 
+            return BadRequest(ModelState); 
         }
     }
 }

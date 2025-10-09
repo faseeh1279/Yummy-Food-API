@@ -10,7 +10,7 @@ namespace Yummy_Food_API.Models.DTOs
         [Required]
         public string Email { get; set; } 
         [Required]
-        public string? Password { get; set; } 
+        public string Password { get; set; } 
 
     }
 }

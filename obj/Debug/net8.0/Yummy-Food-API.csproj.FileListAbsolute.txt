@@ -359,3 +359,5 @@ C:\Users\MK Laptop\Source\Repos\Yummy-Food-API\bin\Debug\net8.0\Microsoft.Extens
 C:\Users\MK Laptop\Source\Repos\Yummy-Food-API\bin\Debug\net8.0\System.Net.ServerSentEvents.dll
 C:\Users\MK Laptop\Source\Repos\Yummy-Food-API\bin\Debug\net8.0\System.Threading.Channels.dll
 C:\Users\MK Laptop\Source\Repos\Yummy-Food-API\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\MK Laptop\Source\Repos\Yummy-Food-API\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\MK Laptop\Source\Repos\Yummy-Food-API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

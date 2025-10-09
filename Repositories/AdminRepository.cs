@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Net.WebSockets;
+using Yummy_Food_API.Enums;
 using Yummy_Food_API.Models.Domain;
 using Yummy_Food_API.Models.DTOs;
 using Yummy_Food_API.Repositories.Interfaces;
@@ -13,112 +14,119 @@ namespace Yummy_Food_API.Repositories
         private readonly ApplicationDBContext _dbContext;
         private readonly IWebHostEnvironment _environment;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AdminRepository(ApplicationDBContext dbContext, IWebHostEnvironment environment, 
+        public AdminRepository(ApplicationDBContext dbContext, IWebHostEnvironment environment,
             IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _environment = environment;
             _httpContextAccessor = httpContextAccessor;
         }
-        
 
-        public async Task<string> AddItemAsync(ItemDTO itemDTO)
+        #region Items 
+
+        public async Task<Item> AddItemAsync(Item item)
         {
-            bool itemInDb = await _dbContext.Items.AnyAsync(i => i.Name == itemDTO.Name); 
-            if (itemInDb)
+            var result = await _dbContext.Items.AddAsync(item);
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
+        }
+
+        public async Task<Item?> DeleteItemAsync(Guid id)
+        {
+            var result = await _dbContext.Items.FindAsync(id);
+
+            if (result != null)
             {
-                return "Item with the same name already exists"; 
-            }
-            var itemCategories = await _dbContext.ItemCategories.FirstOrDefaultAsync(i => i.Category == itemDTO.Category);
-            if(itemCategories != null)
-            {
-                var query = new Item
-                {
-                    Id = Guid.NewGuid(),
-                    Name = itemDTO.Name,
-                    Description = itemDTO.Description,
-                    Price = itemDTO.Price,
-                    Discount = itemDTO.Discount,
-                    ItemCategory = itemCategories,
-                    ItemCategoryId = itemCategories.ID
-                };
-                var result = await _dbContext.Items.AddAsync(query);
+                _dbContext.Items.Remove(result);
                 await _dbContext.SaveChangesAsync();
-                return "Item Added Successfully"; 
+                return result;
             }
-            else
-            {
-                return "Add Category First! Then Add Item"; 
-            }
+            return null;
         }
 
-        public async Task<ItemCategory> GetItemCategoryAsync(string Category)
+        public async Task<Item?> UpdateItemAsync(Guid Id, Item item)
         {
-            var result = await _dbContext.ItemCategories.FirstOrDefaultAsync(i => i.Category == Category);
-            return result; 
-        }
-
-        public async Task<string> AddItemCategoryAsync(ItemCategory itemCategory)
-        {
-            bool categoryExists = await _dbContext.ItemCategories.AnyAsync(i => i.Category == itemCategory.Category);
-            if (!categoryExists)
+            var result = await _dbContext.Items.FirstOrDefaultAsync(i => i.Id == Id);
+            
+            if (result != null)
             {
-                await _dbContext.ItemCategories.AddAsync(itemCategory);
+                _dbContext.Items.Update(item);
                 await _dbContext.SaveChangesAsync();
-                return "Category Added Successfully"; 
+                return item;
             }
-            else
-            {
-                return "Category Already Exists"; 
-            }
+            return null;
         }
 
-        public async Task<List<ItemCategory>> GetAllCategoriesAsync()
+        public async Task<List<Item>?> FetchItemsAsync()
+        {
+            var result = await _dbContext.Items.ToListAsync();
+            if (result != null)
+                return result;
+            return null;
+        }
+        public async Task<Item?> FetchItemByIdAsync(Guid itemID)
+        {
+            var result = await _dbContext.Items.FirstOrDefaultAsync(i => i.Id == itemID);
+            if (result != null)
+                return result;
+            return null;
+        }
+
+        #endregion Items 
+
+        #region Categories 
+
+        public async Task<ItemCategory> AddCategoryAsync(ItemCategory itemCategory)
+        {
+            var result = await _dbContext.ItemCategories.AddAsync(itemCategory);
+            return result.Entity;
+        }
+
+        public async Task<ItemCategory?> UpdateCategoryAsync(ItemCategory itemCategory)
+        {
+            var result = await _dbContext.ItemCategories.FirstOrDefaultAsync(i => i.ID == itemCategory.ID);
+            if (result != null)
+            {
+                _dbContext.ItemCategories.Update(itemCategory);
+                await _dbContext.SaveChangesAsync();
+                var item = await _dbContext.ItemCategories.FirstOrDefaultAsync(i => i.ID == itemCategory.ID);
+                return item;
+            }
+            return null;
+        }
+
+        public async Task<ItemCategory?> DeleteCategoryAsync(Guid CategoryId)
+        {
+            var result = await _dbContext.ItemCategories.FindAsync(CategoryId);
+            if (result != null)
+            {
+                _dbContext.ItemCategories.Remove(result);
+                await _dbContext.SaveChangesAsync();
+                return result;
+            }
+            return null;
+
+        }
+
+        public async Task<List<ItemCategory>?> FetchCategoriesAsync()
         {
             var result = await _dbContext.ItemCategories.ToListAsync();
             if (result != null)
-            {
-                return result; 
-            }
-            else
-            {
-                return null; 
-            }
+                return result;
+            return null;
         }
 
-        public async Task<string> UpdateCategoryAsync(Guid CategoryId, string categoryName)
+        public async Task<ItemCategory?> FetchCategoryByIdAsync(Guid categoryID)
         {
-            var category = await _dbContext.ItemCategories.FirstOrDefaultAsync(i => i.ID == CategoryId); 
-            if (category != null)
-            {
-                var result = new ItemCategory
-                {
-                    ID = category.ID,
-                    Category = categoryName
-                };
-                return "Category Updated Successfully"; 
-            }
-            else
-            {
-                return "Category Not Available"; 
-            }
+            var result = await _dbContext.ItemCategories.FirstOrDefaultAsync(i => i.ID == categoryID);
+            if (result != null)
+                return result;
+            return null;
         }
 
-        public async Task<string> DeleteCategoryAsync(Guid CategoryId)
-        {
-            var result = await _dbContext.ItemCategories.FindAsync(CategoryId); 
-            if(result != null)
-            {
-                _dbContext.ItemCategories.Remove(result); 
-                await _dbContext.SaveChangesAsync();
-                return "Item Removed Successfully"; 
-            }
-            else
-            {
-                return "Item Not Found"; 
-            }
-        }
+        #endregion Categories 
 
+        #region Item Images 
         public async Task<ItemImage> Upload(ItemImage image)
         {
             // Make sure the Images folder exists
@@ -161,7 +169,7 @@ namespace Yummy_Food_API.Repositories
 
         public async Task<List<Item>> GetAllItemsAsync()
         {
-            return await _dbContext.Items.ToListAsync(); 
+            return await _dbContext.Items.ToListAsync();
         }
 
         public async Task<List<ItemImage>> GetAllItemImagesAsync()
@@ -169,53 +177,67 @@ namespace Yummy_Food_API.Repositories
             return await _dbContext.ItemImages.ToListAsync();
         }
 
-        public async Task<List<ItemCategory>> GetAllItemCategoriesAsync()
+        #endregion Item Images 
+
+        #region Orders 
+        public async Task<List<Order>?> FetchCompletedOrdersAsync()
         {
-            return await _dbContext.ItemCategories.ToListAsync();
+            var result =  await _dbContext.Orders.Where(o => o.OrderStatus == Enums.OrderStatus.Delivered).ToListAsync();
+            if (result != null)
+                return result;
+            return null; 
         }
 
-        public async Task<string> DeleteItemAsync(Guid id)
-        {
-            var item = await _dbContext.Items.FindAsync(id);
 
-            if (item != null)
+        #endregion Orders
+
+        #region Complaints
+        public async Task<List<Complaint>?> FetchAllComplaintsAsync()
+        {
+            var result = await _dbContext.Complaints.ToListAsync();
+            if (result != null)
+                return result;
+            return null; 
+        }
+
+        public async Task<Complaint?> UpdateComplaintStatus(Guid complaintID, ComplaintStatus complaintStatus)
+        {
+            var result = await _dbContext.Complaints.FirstOrDefaultAsync(c => c.Id == complaintID); 
+            if (result!= null)
             {
-                _dbContext.Items.Remove(item);
+                result.ComplaintStatus = complaintStatus;
+                result.UpdatedAt = DateTime.UtcNow;
+                _dbContext.Complaints.Update(result);
                 await _dbContext.SaveChangesAsync(); 
-                return "Item Deleted successfully";
             }
-            else
-                return "Item not Found"; 
+            return null; 
         }
+        #endregion Complaints
 
-        public async Task<string> UpdateItemAsync(Guid Id, ItemDTO itemDTO)
+        public async Task<List<User>?> GetUsersListAsync()
         {
-            var item = await _dbContext.Items.FindAsync(Id);
-             
-            if (item != null)
-            {
-                var itemCategory = await _dbContext.ItemCategories.FirstOrDefaultAsync(i => i.Category == itemDTO.Category);
-                if(itemCategory != null)
-                {
-                    item.Name = itemDTO.Name;
-                    item.Description = itemDTO.Description;
-                    item.Price = itemDTO.Price;
-                    item.Discount = itemDTO.Discount;
-                    item.ItemCategory = itemCategory!;
-                    await _dbContext.SaveChangesAsync();
-                    return "Item Updated Successfully"; 
-                }
-                else
-                {
-                return "Category Not Exists! Create one to continue"; 
-
-                }
-            }
-            else
-            {
-                return "Item Not Found!"; 
-            }
+            var result = await _dbContext.Users.ToListAsync();
+            if (result != null)
+                return result;
+            return null; 
         }
-
+        public async Task<User?> GetUserAsync(Guid userID)
+        {
+            var result = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userID);
+            if (result != null)
+                return result;
+            return null; 
+        }
+        public async Task<User?> UpdateUserAsync(User user)
+        {
+            var userExists = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (userExists != null)
+            {
+                _dbContext.Users.Update(user);
+                await _dbContext.SaveChangesAsync();
+                return user;
+            }
+            return null; 
+        }
     }
 }

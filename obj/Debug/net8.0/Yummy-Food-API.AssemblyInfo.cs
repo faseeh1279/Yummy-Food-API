@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("0e6c547a-06f8-44df-a07a-93a41458a6ef")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Yummy-Food-API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+363247b0a81d4b04d7369869267f53a67d2e5109")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+373fed0cab49d4126a7c48e0462a8ea7cec8f67f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Yummy-Food-API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Yummy-Food-API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

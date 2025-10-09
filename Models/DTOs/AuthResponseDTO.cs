@@ -1,4 +1,7 @@
-﻿namespace Yummy_Food_API.Models.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+using Yummy_Food_API.Models.Domain;
+
+namespace Yummy_Food_API.Models.DTOs
 {
     public class AuthResponseDTO
     {

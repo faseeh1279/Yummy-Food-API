@@ -12,19 +12,25 @@ namespace Yummy_Food_API.Repositories
         {
             _dbContext = dbcontext;
         }
-        public async Task<List<Item>> GetAllItemsAsync()
+        public async Task<List<Item>?> GetAllItemsAsync()
         {
-            return await _dbContext.Items.ToListAsync(); 
+            var result = await _dbContext.Items.ToListAsync();
+            if (result != null)
+                return result;
+            return null; 
         }
-        public async Task<List<ItemCategory>> GetAllCategoriesAsync()
+        public async Task<List<ItemCategory>?> GetAllCategoriesAsync()
         {
-            return await _dbContext.ItemCategories.ToListAsync(); 
+            var result = await _dbContext.ItemCategories.ToListAsync();
+            if (result != null)
+                return result;
+            return null; 
         }
         public async Task<List<ItemImage>> GetAllItemImagesAsync()
         {
             return await _dbContext.ItemImages.ToListAsync();
         }
-        public async Task<List<Order>> GetAllOrdersAsync()
+        public async Task<List<Order>?> GetAllOrdersAsync()
         {
             var result = await _dbContext.Orders.ToListAsync();
             if (result != null)
@@ -77,15 +83,19 @@ namespace Yummy_Food_API.Repositories
             var result = await _dbContext.CustomerProfiles.AddAsync(customerProfile);
             return result.Entity; 
         }
-        public async Task<Order> GetPendingOrderByCustomerAsync(Guid customerProfileId)
+        public async Task<Order?> GetPendingOrderByCustomerProfileAsync(Guid customerProfileId)
         {
             var result = await _dbContext.Orders.FirstOrDefaultAsync(o => o.CustomerProfileId == customerProfileId);
-            return result; 
+            if (result != null)
+                return result; 
+            return null; 
         }
-        public async Task<List<Order>> GetOrderHistoryAsync(Guid customerProfileId)
+        public async Task<List<Order>?> GetDeliveredOrderHistoryAsync(Guid customerProfileId)
         {
-            var result = await _dbContext.Orders.Where(o => o.CustomerProfileId == customerProfileId).ToListAsync();
-            return result; 
+            var result = await _dbContext.Orders.Where(o => o.CustomerProfileId == customerProfileId && o.OrderStatus == Enums.OrderStatus.Delivered).ToListAsync();
+            if (result != null)
+                return result; 
+            return null; 
         }
 
     }

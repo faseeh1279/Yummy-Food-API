@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -24,66 +25,54 @@ namespace Yummy_Food_API.Services
             _tokenService = tokenService;
         }
 
-        public async Task<LoginResultDTO> Login(LoginDTO loginDTO)
+        public async Task<ServiceResponse<LoginResultDTO>> Login(LoginDTO loginDTO)
         {
-            var user = new User
+            var response = new ServiceResponse<LoginResultDTO>();
+            var user = await _authRepository.GetUserAsync(loginDTO.Email);
+            if (user == null)
             {
-                Username = loginDTO.Username,
-                Email = loginDTO.Email
+                response.Success = false;
+                response.Message = "User not found.";
+                return response;
+            }
+            if (user.Username != loginDTO.Username)
+            {
+                response.Success = false;
+                response.Message = "Invalid Credentials";
+                return response;
+            }
+            var result = _tokenService.VerifyPassword(user.HashedPassword, loginDTO.Password);
+
+            if (!result)
+            {
+                response.Success = false;
+                response.Message = "Invalid Credentials";
+                return response;
+            }
+
+            var accessToken = await _tokenService.GenerateJSONWebToken(user);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            var token = new RefreshToken
+            {
+                UserId = user.Id,
+                Token = refreshToken,
+                Expires = DateTime.UtcNow.AddDays(7),
             };
-            var userResult = await _authRepository.GetUserAsync(user); // returns a string or null
-
-            
-
-            if (userResult.HashedPassword != null)
+            await _authRepository.AddRefreshToken(token);
+            response.Success = true;
+            response.Data = new LoginResultDTO
             {
-                var result = _tokenService.VerifyPassword(userResult.HashedPassword, loginDTO.Password);
-                if (result)
-                {
-                    var accessToken = await _tokenService.GenerateJSONWebToken(loginDTO);
-                    var refreshToken = _tokenService.GenerateRefreshToken();
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
+            return response;
 
-                    var token = new RefreshToken
-                    {
-                        UserId = userResult.Id,
-                        Token = refreshToken,
-                        Expires = DateTime.UtcNow.AddDays(7),  // <-- Expires after 7 days
-                    };
-
-                    await _authRepository.AddRefreshToken(token);
-
-                    return new LoginResultDTO
-                    {
-                        Message = "Login Successful",
-                        AccessToken = accessToken,
-                        RefreshToken = refreshToken
-                    };
-                }
-                else
-                {
-                    return new LoginResultDTO
-                    {
-                        Message = "Invalid Password",
-                        AccessToken = "null",
-                        RefreshToken = "null"
-                    };
-                }
-               
-            }
-            else
-            {
-                return new LoginResultDTO
-                {
-                    Message = "Login Failed",
-                    AccessToken = "null",
-                    RefreshToken = "null"
-                };
-            }
 
         }
 
-        public async Task<string> SignUp(SignUpDTO signUpDTO)
+        public async Task<ServiceResponse<User>> SignUp(SignUpDTO signUpDTO)
         {
+            var response = new ServiceResponse<User>();
             var hashedPassword = _tokenService.HashPassword(signUpDTO.Password); // Hash the password before saving it
             var user = new User
             {
@@ -95,39 +84,51 @@ namespace Yummy_Food_API.Services
             };
 
             var result = await _authRepository.SignUp(user);
-            return result;
+            if (result == null)
+            {
+                response.Success = false;
+                response.Message = "User with this email already exists.";
+                return response;
+            }
+            response.Success = true;
+            response.Data = result;
+            return response;
         }
 
-        public async Task<string> GenerateNewAccessToken(string refreshToken)
+        public async Task<ServiceResponse<string>> GenerateNewAccessToken(string refreshToken)
         {
+            var response = new ServiceResponse<string>();
             var result = await _authRepository.GetRefreshToken(refreshToken);
-            if(result == null)
+            if (result == null)
             {
-                return "Invalid Refresh Token"; 
+                response.Success = false;
+                response.Message = "Invalid Refresh Token";
+                return response;
             }
 
-            if(result.Expires < DateTime.UtcNow)
+            if (result.Expires < DateTime.UtcNow)
             {
-                return "Refresh Token Expired, Login Again to Continue"; 
+                response.Success = false;
+                response.Message = "Refresh Token Expired, Login Again to Continue";
+                return response; 
             }
             else
             {
-                var userData = await _authRepository.GetUserDataByRefreshToken(result.Token);
-                if(userData != null)
+                var user = await _authRepository.GetUserAsync(result.User.Email);
+                if(user== null)
                 {
-                    var loginDTO = new LoginDTO
-                    {
-                        Username = userData.Username,
-                        Email = userData.Email
-                    }; 
-                    var response = await _tokenService.GenerateJSONWebToken(loginDTO);
-                    return response; 
+                    response.Success = false;
+                    response.Message = "Something went wrong! Try Again";
+                    return response;
                 }
-                else
+                response.Success = true;
+                response.Data = await _tokenService.GenerateJSONWebToken(new User
                 {
-                    return "Something went wrong! Try Again"; 
-                }
-            } 
+                    Username = user.Username,
+                    Email = user.Email
+                });
+                return response; 
+            }
         }
     }
 }

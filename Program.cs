@@ -5,11 +5,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Yummy_Food_API;
 using Yummy_Food_API.Hubs;
+using Yummy_Food_API.Mappings;
 using Yummy_Food_API.Repositories;
 using Yummy_Food_API.Repositories.Interfaces;
 using Yummy_Food_API.Services;
 using Yummy_Food_API.Services.Interfaces;
 using Yummy_Food_API.Services.Realtime;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +24,7 @@ builder.Services.AddControllers();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler =
-            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 
@@ -44,8 +45,11 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IRiderService, RiderService>(); 
-builder.Services.AddSingleton<Yummy_Food_API.Hubs.AppHub>(); 
+builder.Services.AddSingleton<Yummy_Food_API.Hubs.AppHub>();
 // Add Mappings 
+builder.Services.AddAutoMapper(typeof(ProductProfile));
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 // Database Injecting & Add Database context 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
@@ -132,6 +136,7 @@ if (app.Environment.IsDevelopment())
         c.DisplayRequestDuration();
         c.DefaultModelsExpandDepth(-1); // Optional: hide schemas
         c.EnableFilter(); // ✅ Enables search filter box
+        //c.InjectJavascript("/swagger/swagger-custom.js"); // custom JS file for API testing 
     });
 }
 app.UseCors("AllowAll");

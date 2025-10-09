@@ -70,11 +70,17 @@ namespace Yummy_Food_API.Migrations
                     b.Property<int>("ComplaintStatus")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("CustomerProfileId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("RiderProfileId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -110,6 +116,9 @@ namespace Yummy_Food_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -129,6 +138,9 @@ namespace Yummy_Food_API.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -303,6 +315,9 @@ namespace Yummy_Food_API.Migrations
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isBlocked")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

@@ -16,6 +16,7 @@ namespace Yummy_Food_API.Models.Domain
         [Required]
         public string HashedPassword { get; set; } = string.Empty;
         public UserRole Role { get; set; } = UserRole.Customer;
+        public bool isBlocked { get; set; } = false; 
 
         // Navigation Property 
         public RefreshToken RefreshToken { get; set; } 
