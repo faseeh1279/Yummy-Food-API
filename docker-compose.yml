@@ -1,0 +1,13 @@
+services:
+  yummy-food-api-db:
+    container_name: yummyfoodapidb
+    image: ${DOCKER_REGISTRY-}yummyfoodapidb
+
+  yummy-food-api:
+    container_name: yummyfoodapi
+    image: ${DOCKER_REGISTRY-}yummyfoodapi
+    build:
+      context: src/Yummy-Food-API
+      dockerfile: Dockerfile
+    ports:
+        - 8001:80
