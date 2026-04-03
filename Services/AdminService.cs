@@ -441,3 +441,25 @@ namespace Yummy_Food_API.Services
         }
     }
 }
+
+
+public class ItemsService
+{
+    
+}
+
+public class CategoriesService
+{
+
+}
+
+public class OrdersService
+{
+
+}
+
+public class ComplaintsService
+{
+
+}
+

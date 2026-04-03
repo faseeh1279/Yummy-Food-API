@@ -27,9 +27,6 @@ namespace Yummy_Food_API.Services
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-
-
-
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Username),
@@ -44,8 +41,6 @@ namespace Yummy_Food_API.Services
             expires: DateTime.Now.AddMinutes(120),
             signingCredentials: credentials
         );
-
-
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
