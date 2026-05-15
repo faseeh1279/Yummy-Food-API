@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\Yummy-Food-API.csproj": {}
+    "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Yummy-Food-API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\Yummy-Food-API.csproj": {
+    "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Yummy-Food-API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\Yummy-Food-API.csproj",
+        "projectUniqueName": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Yummy-Food-API.csproj",
         "projectName": "Yummy-Food-API",
-        "projectPath": "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\Yummy-Food-API.csproj",
+        "projectPath": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\Yummy-Food-API.csproj",
         "packagesPath": "C:\\Users\\MK Laptop\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\MK Laptop\\Source\\Repos\\Yummy-Food-API\\obj\\",
+        "outputPath": "C:\\Users\\MK Laptop\\source\\repos\\Yummy-Food-API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -122,7 +122,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.310/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
